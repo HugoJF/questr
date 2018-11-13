@@ -1,0 +1,19 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+    	factory(App\User::class, 10)->create();
+    	factory(\App\Quest::class, 50)->create();
+    	factory(\App\QuestProgress::class, 30)->create();
+    	factory(\App\QuestFilter::class, 20)->create();
+    }
+}
