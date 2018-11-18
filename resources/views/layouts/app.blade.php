@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/pricing.css') }}" rel="stylesheet">
+    <link href="{{ asset('/css/csgo-questr.css') }}" rel="stylesheet">
     
     <style>
         .card-deck .card .card-header {

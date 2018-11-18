@@ -13,16 +13,17 @@ return [
 	|
 	*/
 
-	'name'          => env('APP_NAME', 'Laravel'),
-	'bit-skins-key' => env('BIT_SKINS_KEY'),
-	'durations'     => [
+	'name'            => env('APP_NAME', 'Laravel'),
+	'bit-skins-key'   => env('BIT_SKINS_KEY'),
+	'redis-event-key' => env('REDIS_EVENT_KEY'),
+	'durations'       => [
 		'1'  => [
 			'title'      => '1 day',
 			'multiplier' => 1.5,
 		],
 		'2'  => [
 			'title'      => '2 days',
-			'multiplier' => 1.4,
+			'multiplier' => 1.3,
 		],
 		'7'  => [
 			'title'      => '7 days',

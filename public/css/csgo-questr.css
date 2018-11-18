@@ -7,14 +7,119 @@ html {
     }
 }
 
-.container {
-    max-width: 960px;
+
+.color-eb4b4b {
+    border-color: #b81818;
+}
+.color-eb4b4b .card-header {
+    background-color: #eb4b4b;
+    border-bottom: 1px solid #b81818;
+}
+.color-eb4b4b a {
+    color: #eb4b4b;
+    border-color: #b81818;
+}
+.color-eb4b4b a:hover {
+    background-color: #eb4b4b;
+    border-color: #b81818;
 }
 
-.pricing-header {
-    max-width: 700px;
+
+.color-4b69ff {
+    border-color: #1836CC;
+}
+.color-4b69ff .card-header {
+    background-color: #4b69ff;
+    border-bottom: 1px solid #1836CC;
+}
+.color-4b69ff a {
+    color: #4b69ff;
+    border-color: #1836CC;
+}
+.color-4b69ff a:hover {
+    background-color: #4b69ff;
+    border-color: #1836CC;
 }
 
-.card-deck .card {
-    min-width: 220px;
+
+.color-8847ff {
+    border-color: #8847ff;
+}
+.color-8847ff .card-header {
+    background-color: #8847ff;
+    border-bottom: 1px solid #5514CC;
+}
+.color-8847ff a {
+    color: #8847ff;
+    border-color: #5514CC;
+}
+.color-8847ff a:hover {
+    background-color: #8847ff;
+    border-color: #5514CC;
+}
+
+
+.color-d32ce6 {
+    border-color: #d32ce6;
+}
+.color-d32ce6 .card-header {
+    background-color: #d32ce6;
+    border-bottom: 1px solid #a000b3;
+}
+.color-d32ce6 a {
+    color: #d32ce6;
+    border-color: #a000b3;
+}
+.color-d32ce6 a:hover {
+    background-color: #d32ce6;
+    border-color: #a000b3;
+}
+
+.color-5e98d9 {
+    border-color: #5e98d9;
+}
+.color-5e98d9 .card-header {
+    background-color: #5e98d9;
+    border-bottom: 1px solid #2b65a6;
+}
+.color-5e98d9 a {
+    color: #5e98d9;
+    border-color: #2b65a6;
+}
+.color-5e98d9 a:hover {
+    background-color: #5e98d9;
+    border-color: #2b65a6;
+}
+
+
+.color-b0c3d9 {
+    border-color: #b0c3d9;
+}
+.color-b0c3d9 .card-header {
+    background-color: #b0c3d9;
+    border-bottom: 1px solid #7d90a6;
+}
+.color-b0c3d9 a {
+    color: #b0c3d9;
+    border-color: #7d90a6;
+}
+.color-b0c3d9 a:hover {
+    background-color: #b0c3d9;
+    border-color: #7d90a6;
+}
+
+.color-e4ae39 {
+    border-color: #e4ae39;
+}
+.color-e4ae39 .card-header {
+    background-color: #e4ae39;
+    border-bottom: 1px solid #b17b06;
+}
+.color-e4ae39 a {
+    color: #e4ae39;
+    border-color: #b17b06;
+}
+.color-e4ae39 a:hover {
+    background-color: #e4ae39;
+    border-color: #b17b06;
 }

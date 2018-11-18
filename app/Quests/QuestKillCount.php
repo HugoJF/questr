@@ -38,8 +38,6 @@ class QuestKillCount extends BaseQuest
 			return false;
 		}
 
-		$filters = $this->quest->questFilters->keyBy('key');
-
 		$filter = $this->quest->questFilters()->where('key', 'weapon')->first();
 
 		if ($filter && $filter->value != $this->event->weapon) {
@@ -68,7 +66,7 @@ class QuestKillCount extends BaseQuest
 		}
 	}
 
-	public function getQuestFilters()
+	public static function getQuestFilters()
 	{
 		return [
 			'weapon' => [

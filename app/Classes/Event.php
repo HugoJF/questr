@@ -15,6 +15,8 @@ class Event
 	const TYPE_DAMAGE = 1;
 
 	public $type;
+	public $serverIp;
+	public $serverPort;
 
 	public $date;
 	public $time;

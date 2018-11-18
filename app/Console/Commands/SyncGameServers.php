@@ -131,7 +131,7 @@ class SyncGameServers extends Command
 		$itemName = $inv->item->item_name;
 		$short = $this->weaponNameToShort($itemName);
 
-		$condition = $inv->item->conditions;
+		$condition = $inv->item->condition;
 		$float = $this->conditionNameToFloat($condition);
 
 		$this->syncColumn($steamId, $short, $index, $float);

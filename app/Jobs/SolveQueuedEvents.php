@@ -18,7 +18,7 @@ class SolveQueuedEvents implements ShouldQueue
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
 	private $eventsPerJob = 30000;
-	private $messageKey = 'messages';
+	private $messageKey = null;
 
 	private $command;
 
@@ -29,6 +29,7 @@ class SolveQueuedEvents implements ShouldQueue
 	 */
 	public function __construct(Command $command)
 	{
+		$this->messageKey = config('app.redis-event-key');
 		$this->command = $command;
 		$command->info('Hooked');
 	}

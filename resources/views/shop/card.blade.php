@@ -1,7 +1,7 @@
-<div class="card mb-4 shadow-sm">
+<div class="card mb-4 shadow-sm quality-color color-{{ strtolower($item->quality_color) }}">
     <div class="card-header">
         <h4 class="my-0 font-weight-normal w-100">
-            <a class="text-dark" href="{{ route('shop.show', $item) }}">{{ $item->market_hash_name }}</a>
+            <a class="text-white" href="{{ route('shop.show', $item) }}">{{ $item->market_hash_name }}</a>
         </h4>
         <br/>
     </div>
@@ -9,6 +9,14 @@
         <img class="{{ ($detailed ?? false) ? 'w-auto' : 'w-100' }}" src="{{ $item->icon_url }}">
         <ul class="list-unstyled mt-3 mb-4">
             <li>
+                <h5>
+                    {{ ceil($item->price * config('app.durations')[1]['multiplier']) }} <i class="fas fa-coins"></i>
+                    <small class="text-muted"> / day</small>
+                </h5>
+                <h5>
+                    {{ ceil($item->price * 2 * config('app.durations')[2]['multiplier']) }} <i class="fas fa-coins"></i>
+                    <small class="text-muted"> / 2 days</small>
+                </h5>
                 <h3>
                     {{ $item->price * 7 }} <i class="fas fa-coins"></i>
                     <small class="text-muted"> / week</small>
@@ -32,7 +40,7 @@
                 </div>
                 <div class="modal-body">
                     Are you sure you want to buy <strong>{{ $item->market_hash_name }}</strong>?
-                    <ul class="list-unstyled">
+                    <ul class="mt-2 list-unstyled">
                         @foreach(config('app.durations') as $key => $dur)
                             <li><strong>{{ $dur['title'] }}:</strong> {{ ceil($item->price * intval($key) * $dur['multiplier']) }} <i class="fas fa-coins"></i>
                                 <small class="ml-2 text-muted">({{ $item->price * $dur['multiplier'] }} <i class="fas fa-coins"></i> per day)</small>

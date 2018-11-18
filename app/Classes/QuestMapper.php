@@ -17,14 +17,6 @@ class QuestMapper
 		'KILL_COUNT' => QuestKillCount::class,
 	];
 
-	private static $filters = [
-		'KILL_COUNT' => [
-			'weapon' => [
-				'ak47', 'awp',
-			],
-		],
-	];
-
 	static function getRunnerBase($type)
 	{
 		$class = static::getRunnerClass($type);
@@ -44,27 +36,38 @@ class QuestMapper
 		return array_keys(static::$map);
 	}
 
+	static function getFilter($type)
+	{
+		if (array_key_exists($type, static::$map)) {
+			$class = static::$map[ $type ];
+
+			$result = call_user_func($class . '::getQuestFilters');
+
+			return $result;
+		}
+
+		return [];
+	}
+
 	static function getFilterKeys($type)
 	{
-		if (array_key_exists($type, static::$filters)) {
-			$filters = static::$filters[ $type ];
-			$keys = array_keys($filters);
+		$data = static::getFilter($type);
 
-			return $keys;
-		} else {
-			return [];
+		if ($data) {
+			return array_keys($data);
 		}
+
+		return [];
 	}
 
 	static function getFilterValues($type, $key)
 	{
-		if (array_key_exists($type, static::$filters) && array_key_exists($key, static::$filters[ $type ])) {
-			$filters = static::$filters[ $type ];
-			$values = array_values($filters[ $key ]);
+		$data = static::getFilter($type);
 
-			return $values;
-		} else {
-			return [];
+		if ($data && array_key_exists($key, $data)) {
+			return $data[ $key ];
 		}
+
+		return [];
 	}
 }

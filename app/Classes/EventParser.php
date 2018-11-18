@@ -11,41 +11,43 @@ namespace App\Classes;
 
 class EventParser
 {
-	const PATTERN = "/(\d{1,2}\\/\\d{1,2}\\/\d{1,4})\s-\s(\d{1,2}:\d{1,2}:\d{1,2}):\s\"(.+?)<(\d*)><(STEAM_\d:\d:\d+?)><(.+?)>\"\s\[(-?\d+?)\s(-?\d+?)\s(-?\d+?)\]\sattacked\s\"(.+?)<(\d+?)><(STEAM_\d:\d:\d+?)><(.+?)>\"\s\[(-?\d+?)\s(-?\d+?)\s(-?\d+?)\]\swith\s\"(.+?)\"\s\(damage\s\"(\d+?)\"\)\s\(damage_armor\s\"(\d+?)\"\)\s\(health\s\"(\d+?)\"\)\s\(armor\s\"(\d+?)\"\)\s\(hitgroup\s\"(.+?)\"\)/";
+	// (\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{1,5})\s-\s(\d{1,2}\/\d{1,2}\/\d{1,4})\s-\s(\d{1,2}:\d{1,2}:\d{1,2}):\s"(.+?)<(\d*)><(STEAM_\d:\d:\d+?)><(.+?)>"\s\[(-?\d+?)\s(-?\d+?)\s(-?\d+?)\]\sattacked\s"(.+?)<(\d+?)><(STEAM_\d:\d:\d+?)><(.+?)>"\s\[(-?\d+?)\s(-?\d+?)\s(-?\d+?)\]\swith\s"(.+?)"\s\(damage\s"(\d+?)"\)\s\(damage_armor\s"(\d+?)"\)\s\(health\s"(\d+?)"\)\s\(armor\s"(\d+?)"\)\s\(hitgroup\s"(.+?)"\)
+
+	const PATTERN = "/(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(\d{1,5})\s-\s(\d{1,2}\/\d{1,2}\/\d{1,4})\s-\s(\d{1,2}:\d{1,2}:\d{1,2}):\s\"(.+?)<(\d*)><(STEAM_\d:\d:\d+?)><(.+?)>\"\s\[(-?\d+?)\s(-?\d+?)\s(-?\d+?)\]\sattacked\s\"(.+?)<(\d+?)><(STEAM_\d:\d:\d+?)><(.+?)>\"\s\[(-?\d+?)\s(-?\d+?)\s(-?\d+?)\]\swith\s\"(.+?)\"\s\(damage\s\"(\d+?)\"\)\s\(damage_armor\s\"(\d+?)\"\)\s\(health\s\"(\d+?)\"\)\s\(armor\s\"(\d+?)\"\)\s\(hitgroup\s\"(.+?)\"\)/";
+
+	private $params = [
+		null, 'serverIp', 'serverPort', 'date', 'time',
+		'attackerName', 'attackerId', 'attackerSteam', 'attackerTeam', null, null, null,
+		'targetName', 'targetId', 'targetSteam', 'targetTeam', null, null, null,
+		'weapon', 'damage', 'armorDamage', 'targetHealth', 'targetArmor', 'hitgroup',
+	];
 
 	public function parse($raw)
 	{
 		$event = null;
 
 		if (preg_match(static::PATTERN, $raw, $c)) {
+
 			$event = new Event();
 			$event->type = Event::TYPE_DAMAGE;
-			$event->date = $c[1];
-			$event->time = $c[2];
-			$event->attackerName = $c[3];
-			$event->attackerId = $c[4];
-			$event->attackerSteam = $c[5];
-			$event->attackerTeam = $c[6];
+
 			$event->attackerPosition = [
-				'x' => intval($c[7]),
-				'y' => intval($c[8]),
-				'z' => intval($c[9]),
+				'x' => intval($c[9]),
+				'y' => intval($c[10]),
+				'z' => intval($c[11]),
 			];
-			$event->targetName = $c[10];
-			$event->targetId = $c[11];
-			$event->targetSteam = $c[12];
-			$event->targetTeam = $c[13];
+
 			$event->targetPosition = [
-				'x' => intval($c[14]),
-				'y' => intval($c[15]),
-				'z' => intval($c[16]),
+				'x' => intval($c[16]),
+				'y' => intval($c[17]),
+				'z' => intval($c[18]),
 			];
-			$event->weapon = $c[17];
-			$event->damage = $c[18];
-			$event->armorDamage = $c[19];
-			$event->targetHealth = $c[20];
-			$event->targetArmor = $c[21];
-			$event->hitgroup = $c[22];
+
+			foreach ($this->params as $key => $param) {
+				if($param !== null) {
+					$event->$param = $c[$key];
+				}
+			}
 		}
 
 		return $event;

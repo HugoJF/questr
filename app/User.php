@@ -66,4 +66,9 @@ class User extends Authenticatable
 			return $rewardBalance - $inventoryBalance;
 		});
 	}
+
+	public function isAdmin()
+	{
+		return $this->steam_id == 'STEAM_1:1:36509127';
+	}
 }

@@ -17,7 +17,7 @@ class QuestKillCountTest extends TestCase
 	use RefreshDatabase;
 	use DatabaseMigrations;
 
-	private $raw = '11/01/2018 - 17:06:24: "CLOWN-<3752><STEAM_1:0:180614322><CT>" [66 -2166 -36] attacked "Lukz -名誉-<3758><STEAM_1:1:119971439><TERRORIST>" [-716 -1666 -172] with "awp" (damage "110") (damage_armor "1") (health "0") (armor "98") (hitgroup "chest")';
+	private $raw = '143.202.39.221:5001 - 11/01/2018 - 17:06:24: "CLOWN-<3752><STEAM_1:0:180614322><CT>" [66 -2166 -36] attacked "Lukz -名誉-<3758><STEAM_1:1:119971439><TERRORIST>" [-716 -1666 -172] with "awp" (damage "110") (damage_armor "1") (health "0") (armor "98") (hitgroup "chest")';
 	private $eventParser;
 	private $eventSolver;
 	private $perTestEventCount = 2;

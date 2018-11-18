@@ -17,6 +17,8 @@ class QuestFilterController extends Controller
 		$form = $formBuilder->create(QuestFilterForm::class, [
 			'method' => 'POST',
 			'url'    => route('quests.filters.store', $quest),
+		], [
+			'quest' => $quest,
 		]);
 
 		return view('form', [

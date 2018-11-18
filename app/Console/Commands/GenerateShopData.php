@@ -41,6 +41,7 @@ class GenerateShopData extends Command
 	public function handle()
 	{
 		$rawBsData = $this->getBitSkinsData($this->argument('tfa'));
+
 		$rawWeaponData = $this->getWeaponData();
 		$bsData = collect($rawBsData->prices);
 		$weaponData = collect($rawWeaponData['Skins']);
@@ -58,8 +59,8 @@ class GenerateShopData extends Command
 			if (preg_match('/\| (.*?) \(/', $item->market_hash_name, $matches) !== 1) {
 				return true;
 			}
-			if (!$weaponData->has($matches[1])) {
 
+			if (!$weaponData->has($matches[1])) {
 				return true;
 			}
 

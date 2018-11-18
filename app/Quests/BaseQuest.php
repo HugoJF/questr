@@ -29,7 +29,7 @@ abstract class BaseQuest
 
 	public abstract function getQuestProgress();
 
-	public abstract function getQuestFilters();
+	public abstract static function getQuestFilters();
 
 	/*
 	 * CONCRETE METHODS
