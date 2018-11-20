@@ -44,6 +44,7 @@ class QuestKillCount extends BaseQuest
 			return false;
 		}
 
+
 		$questProgress->progress++;
 		$persisted = $questProgress->save();
 

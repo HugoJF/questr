@@ -10,9 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class ShopController extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
-		$items = ShopItem::paginate(12);
+		$items = ShopItem::query();
+
+		if ($request->has('query')) {
+			$items->where('market_hash_name', 'LIKE', '%' . $request->input('query') . '%');
+		}
+
+		$items = $items->paginate(12);
 
 		return view('shop.index', [
 			'items' => $items,

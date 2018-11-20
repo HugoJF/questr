@@ -14,7 +14,10 @@ use App\QuestProgress;
 
 abstract class BaseQuest
 {
+	/** @var Quest */
 	protected $quest;
+
+	/** @var Event */
 	protected $event;
 
 	/*
@@ -45,6 +48,7 @@ abstract class BaseQuest
 		$this->event = $event;
 	}
 
+	// TODO: this should be removed
 	public function getUser()
 	{
 		if ($this->event) {
@@ -54,5 +58,17 @@ abstract class BaseQuest
 		}
 	}
 
+	public function acceptsCurrentServer()
+	{
+		$filter = $this->quest->questFilters()->where('key', 'server')->first();
 
+		$server = $this->event->serverIp . ':' . $this->event->serverPort;
+
+		if($filter) {
+			return $filter->value == $server;
+		} else {
+			return true;
+		}
+
+	}
 }

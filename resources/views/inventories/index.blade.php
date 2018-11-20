@@ -6,7 +6,7 @@
         <p class="lead">Items bought!</p>
     </div>
     
-    @include('inventories.card-deck', ['items' => $items, 'chunkSize' => 3])
+    @include('inventories.card-deck', ['items' => $items, 'chunkSize' => 4])
     
     <div class="text-center">
         {!! $items->links() !!}

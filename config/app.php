@@ -14,6 +14,7 @@ return [
 	*/
 
 	'name'            => env('APP_NAME', 'Laravel'),
+
 	'bit-skins-key'   => env('BIT_SKINS_KEY'),
 	'redis-event-key' => env('REDIS_EVENT_KEY'),
 	'durations'       => [

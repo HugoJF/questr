@@ -13,7 +13,7 @@ class EventSolver
 
 		$event = $eventParser->parse($raw);
 
-		$this->solve($event);
+		return $this->solve($event);
 	}
 
 	public function solve(Event $event)
@@ -24,6 +24,7 @@ class EventSolver
 
 			if ($runner->accepts($event)) {
 				$runner->setEvent($event);
+
 				if ($runner->run()) {
 					$successCount++;
 				}

@@ -17,6 +17,10 @@ class QuestMapper
 		'KILL_COUNT' => QuestKillCount::class,
 	];
 
+	private static $defaultFilters = [
+		'server' => [ '*' ],
+	];
+
 	static function getRunnerBase($type)
 	{
 		$class = static::getRunnerClass($type);
@@ -43,7 +47,7 @@ class QuestMapper
 
 			$result = call_user_func($class . '::getQuestFilters');
 
-			return $result;
+			return array_merge($result, static::$defaultFilters);
 		}
 
 		return [];

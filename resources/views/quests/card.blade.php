@@ -36,7 +36,6 @@
             <li><strong>Cost:</strong> {{ $quest->cost ?? 0}} <i class="fas fa-coins"></i></li>
             <li><strong>Starts:</strong> {{ $quest->startAt }}</li>
             <li><strong>Ends:</strong> {{ $quest->endAt }}</li>
-            <li><h5>All members allowed</h5></li>
             <li class="my-3">
                 @if($quest->locked)
                     <h3><span class="badge badge-dark">Unlock in: {{ $quest->startAt->diffForHumans(null, true) }}</span></h3>

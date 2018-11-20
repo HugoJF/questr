@@ -1,31 +1,22 @@
-<div class="card mb-4 shadow-sm quality-color color-{{ strtolower($item->quality_color) }}">
-    <div class="card-header">
-        <h4 class="my-0 font-weight-normal w-100">
-            <a class="text-white" href="{{ route('shop.show', $item) }}">{{ $item->market_hash_name }}</a>
-        </h4>
-        <br/>
-    </div>
-    <div class="card-body">
-        <img class="{{ ($detailed ?? false) ? 'w-auto' : 'w-100' }}" src="{{ $item->icon_url }}">
-        <ul class="list-unstyled mt-3 mb-4">
-            <li>
-                <h5>
-                    {{ ceil($item->price * config('app.durations')[1]['multiplier']) }} <i class="fas fa-coins"></i>
-                    <small class="text-muted"> / day</small>
-                </h5>
-                <h5>
-                    {{ ceil($item->price * 2 * config('app.durations')[2]['multiplier']) }} <i class="fas fa-coins"></i>
-                    <small class="text-muted"> / 2 days</small>
-                </h5>
-                <h3>
-                    {{ $item->price * 7 }} <i class="fas fa-coins"></i>
-                    <small class="text-muted"> / week</small>
-                </h3>
-            </li>
-        </ul>
-        <a data-toggle="modal" data-target="#buy-item-{{ $item->id }}" href="#" class="btn btn-lg btn-block btn-outline-primary">Buy</a>
-    </div>
-</div>
+@component('components.item-cards.card', ['item' => $item])
+    <ul class="list-unstyled mt-3 mb-4">
+        <li>
+            <h5>
+                {{ ceil($item->price * config('app.durations')[1]['multiplier']) }} <i class="fas fa-coins"></i>
+                <small class="text-muted"> / day</small>
+            </h5>
+            <h5>
+                {{ ceil($item->price * 2 * config('app.durations')[2]['multiplier']) }} <i class="fas fa-coins"></i>
+                <small class="text-muted"> / 2 days</small>
+            </h5>
+            <h3>
+                {{ $item->price * 7 }} <i class="fas fa-coins"></i>
+                <small class="text-muted"> / week</small>
+            </h3>
+        </li>
+    </ul>
+    <a data-toggle="modal" data-target="#buy-item-{{ $item->id }}" href="#" class="btn btn-lg btn-block btn-outline-primary">Buy</a>
+@endcomponent
 
 @push('modals')
     <div class="modal fade" id="buy-item-{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="buy-item-label-{{ $item->id }}" aria-hidden="true">

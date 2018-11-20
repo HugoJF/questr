@@ -5,6 +5,15 @@
         <h1 class="display-4">Shop</h1>
         <p class="lead">Items available to buy!</p>
     </div>
+
+
+    {!! Form::open(['route' => ['shop.index'], 'method' => 'GET']) !!}
+    
+    <div class="form-group mb-5">
+        <input class="form-control" name="query" type="text" value="{{ request()->input('query') }}" placeholder="Filter item by name...">
+    </div>
+    
+    {!! Form::close() !!}
     
     @include('shop.card-deck', ['items' => $items, 'chunkSize' => 4])
     
