@@ -35,11 +35,6 @@ class User extends Authenticatable
 		return $this->hasMany(QuestProgress::class);
 	}
 
-	public function rewards()
-	{
-		return $this->hasManyThrough(Reward::class, QuestProgress::class);
-	}
-
 	public function inventories()
 	{
 		return $this->hasMany(Inventory::class);
@@ -47,7 +42,17 @@ class User extends Authenticatable
 
 	public function transactions()
 	{
-		return $this->hasMany(Transactions::class);
+		return $this->hasMany(Transaction::class);
+	}
+
+	public function fakeTransactions()
+	{
+		return $this->morphMany(Transaction::class, 'owner');
+	}
+
+	public function couponUses()
+	{
+		return $this->hasMany(CouponUser::class);
 	}
 
 	public function getBalanceAttribute($refresh = false)
@@ -59,23 +64,6 @@ class User extends Authenticatable
 		return $this->computeBalance();
 
 		return cache()->remember("user-$this->id-balance", 5, function () {
-			//			$rewards = Auth::user()->rewards()->with('questProgress', 'questProgress.quest')->get();
-			//			$inventory = Auth::user()->inventories()->get();
-			//
-			//			$rewardBalance = $rewards->reduce(function ($carry, $item) {
-			//				return $carry + $item->questProgress->quest->reward;
-			//			});
-			//
-			//			$inventoryBalance = $inventory->reduce(function ($carry, $item) {
-			//				return $carry + $item->cost;
-			//			});
-			//
-			//			if ($this->isAdmin()) {
-			//				return 9999999;
-			//			} else {
-			//				return $rewardBalance - $inventoryBalance;
-			//			}
-
 			if ($this->isAdmin()) {
 				return 9999999;
 			} else {

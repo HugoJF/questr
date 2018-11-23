@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuestProgressesTable extends Migration
+class CreateCouponTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateQuestProgressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('quest_progresses', function (Blueprint $table) {
+        Schema::create('coupon', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('progress');
-
-            $table->unsignedInteger('quest_id')->references('id')->on('quests');
-            $table->unsignedInteger('user_id')->references('id')->on('users');
-			$table->timestamp('finished_at')->nullable();
+            $table->string('code');
+            $table->unsignedInteger('reward');
+			$table->dateTime('startAt');
+			$table->dateTime('endAt');
 
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ class CreateQuestProgressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quest_progresses');
+        Schema::dropIfExists('coupon');
     }
 }

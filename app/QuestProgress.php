@@ -15,9 +15,4 @@ class QuestProgress extends Model
 	{
 		return $this->belongsTo(Quest::class);
 	}
-
-	public function reward()
-	{
-		return $this->hasOne(Reward::class);
-	}
 }

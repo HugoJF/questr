@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Quest extends Model
 {
 	protected $fillable = [
-		'title', 'description', 'cost', 'type', 'goal', 'reward', 'startAt', 'endAt'
+		'title', 'description', 'cost', 'type', 'goal', 'reward', 'startAt', 'endAt',
 	];
 
 	protected $dates = [
@@ -24,6 +24,11 @@ class Quest extends Model
 	public function questFilters()
 	{
 		return $this->hasMany(QuestFilter::class);
+	}
+
+	public function transaction()
+	{
+		return $this->morphMany(Transaction::class, 'owner');
 	}
 
 	public function getRunner()
@@ -64,6 +69,7 @@ class Quest extends Model
 	public function getSuccessAttribute()
 	{
 		$questProgress = $this->getQuestProgressForAuthedUser();
+
 		if ($questProgress) {
 			return $questProgress->progress >= $this->goal;
 		} else {
@@ -74,8 +80,9 @@ class Quest extends Model
 	public function getFinishedAttribute()
 	{
 		$questProgress = $this->getQuestProgressForAuthedUser();
+
 		if ($questProgress) {
-			return $questProgress->reward()->exists();
+			return $questProgress->finished_at !== null;
 		} else {
 			return null;
 		}
@@ -94,6 +101,7 @@ class Quest extends Model
 	public function getProgressAttribute()
 	{
 		$questProgress = $this->getQuestProgressForAuthedUser();
+
 		if ($questProgress) {
 			return $questProgress->progress;
 		} else {

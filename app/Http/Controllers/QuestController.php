@@ -6,9 +6,10 @@ use App\Classes\QuestMapper;
 use App\Forms\QuestForm;
 use App\Quest;
 use App\QuestProgress;
-use App\Reward;
+use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Kris\LaravelFormBuilder\FormBuilder;
 
@@ -32,6 +33,28 @@ class QuestController extends Controller
 
 	public function start(Quest $quest)
 	{
+		if (Auth::user()->questProgresses()->where('quest_id', $quest->id)->exists()) {
+			flash()->warning('Quest is already in progress!')->important();
+
+			return back();
+		}
+
+		if ($quest->cost > 0 && Auth::user()->getBalanceAttribute(true) < $quest->cost) {
+			flash()->error('Balance is insufficient to start quest')->important();
+
+			return back();
+		}
+
+		if ($quest->cost > 0) {
+			$transaction = Transaction::make();
+
+			$transaction->value = -$quest->cost;
+			$transaction->user()->associate(Auth::user());
+			$transaction->owner()->associate($quest);
+
+			$transaction->save();
+		}
+
 		$questProgress = QuestProgress::make();
 
 		$questProgress->progress = 0;
@@ -40,36 +63,50 @@ class QuestController extends Controller
 
 		$questProgress->save();
 
-		$title = $quest->title;
-		flash()->success("Quest <strong>$title</strong> has started!");
+		flash()->success("Quest <strong>{$quest->title}</strong> has started!");
 
-		return redirect()->back();
+		return back();
 	}
 
 	public function finish(Quest $quest)
 	{
-		if ($quest->success === true) {
-			$questProgress = $quest->getQuestProgressForAuthedUser();
-
-			if ($questProgress->reward()->exists()) {
-				flash()->error('You cannot get rewarded multiple times by the same quest!')->important();
-
-				return redirect()->back();
-			}
-
-			$reward = Reward::make();
-			$reward->questProgress()->associate($questProgress);
-			$reward->save();
-
-			flash()->success("<strong>Congratulations!</strong> You just finished quest <strong>$quest->title</strong> and got awarded with $quest->reward <i class=\"fas fa-coins\"></i>.")->important();
-
-			return redirect()->back();
-		} else {
+		// Verify if user has succeeded quest
+		if ($quest->success !== true) {
 			flash()->error('You must complete the goal of the quest before finishing it!')->important();
 
-			return redirect()->back();
+			return back();
 		}
+
+		// Get current quest progress
+		$questProgress = $quest->getQuestProgressForAuthedUser();
+
+		// Check if user already finished quest
+		if ($questProgress->finished_at !== null) {
+			flash()->error('You cannot get rewarded multiple times by the same quest!')->important();
+
+			return back();
+		}
+
+		if ($questProgress->user != Auth::user()) {
+			flash()->error('You cannot finish quests that are not yours!')->important();
+
+			return back();
+		}
+
+		// Generate quest transaction for reward
+		$transaction = Transaction::make();
+
+		$transaction->value = $quest->reward;
+		$transaction->user()->associate(Auth::user());
+		$transaction->owner()->associate($questProgress);
+
+		$transaction->save();
+
+		flash()->success("<strong>Congratulations!</strong> You just finished quest <strong>$quest->title</strong> and got awarded with $quest->reward <i class=\"fas fa-coins\"></i>.")->important();
+
+		return back();
 	}
+
 
 	public function create(FormBuilder $formBuilder)
 	{
@@ -97,8 +134,8 @@ class QuestController extends Controller
 			'cost'        => 'required|numeric|gte:0',
 			'goal'        => 'required|numeric|gt:0',
 			'reward'      => 'required|numeric|gt:0',
-			'startAt'       => 'required|date_format:Y-m-d G:i:s',
-			'endAt'         => 'required|date_format:Y-m-d G:i:s',
+			'startAt'     => 'required|date_format:Y-m-d h:i:s',
+			'endAt'       => 'required|date_format:Y-m-d h:i:s',
 		]);
 
 		$quest = Quest::make();

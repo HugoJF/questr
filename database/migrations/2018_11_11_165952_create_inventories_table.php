@@ -23,7 +23,7 @@ class CreateInventoriesTable extends Migration
             $table->unsignedInteger('user_id')->references('id')->on('users');
             $table->unsignedInteger('item_id')->references('id')->on('shop_items');
 
-			$table->timestamp('ends_at')->nullable();
+			$table->dateTime('ends_at')->nullable();
 
             $table->timestamps();
         });

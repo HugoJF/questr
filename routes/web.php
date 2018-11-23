@@ -47,3 +47,14 @@ Route::prefix('inventory')->name('inventory.')->group(function () {
 	Route::get('/', 'InventoryController@index')->name('index')->middleware('can:view,App\Inventory');
 	Route::get('equip/{inventory}', 'InventoryController@equip')->name('equip')->middleware('can:equip,inventory');
 });
+
+Route::prefix('coupon')->name('coupon.')->group(function () {
+	Route::get('create', 'CouponController@create')->name('create')->middleware('can:create,App\Coupon');
+
+	Route::post('/', 'CouponController@store')->name('store')->middleware('can:create,App\Coupon');
+	Route::post('use', 'CouponController@use')->name('use')->middleware('can:use,App\Coupon');
+});
+
+Route::get('is-admin', function () {
+	return Auth::user()->isAdmin() ? 'true' : 'false';
+});

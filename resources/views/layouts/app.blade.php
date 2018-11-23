@@ -56,6 +56,7 @@
         <a class="p-2 text-dark" href="{{ route('quests.create') }}">Create quest</a>
         <a class="p-2 text-dark" href="{{ route('shop.index') }}">Shop</a>
         <a class="p-2 text-dark" href="{{ route('inventory.index') }}">Inventory</a>
+        <a class="p-2 text-dark" data-toggle="modal" data-target="#use-token" href="#">Use coupon</a>
     </nav>
     @guest
         <a class="btn btn-outline-primary" href="{{ route('auth.steam') }}">Sign in</a>
@@ -103,6 +104,30 @@
             </div>
         </div>
     </footer>
+    <div class="modal fade" id="use-token" tabindex="-1" role="dialog" aria-labelledby="use-token-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                {!! Form::open(['route' => ['coupon.use'], 'method' => 'POST']) !!}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="use-token-label">Delete quest filter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Please type the coupon code below:
+                    <div class="form-group">
+                        {!! Form::text('code', null, ['class' => 'my-3 form-control']) !!}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-xs btn-success" type="submit">Use</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
     @stack('modals')
 </div>
 <!-- Bootstrap core JavaScript

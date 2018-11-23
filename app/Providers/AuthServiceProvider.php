@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
 		'App\QuestFilter' => 'App\Policies\QuestFilterPolicy',
 		'App\ShopItem'    => 'App\Policies\ShopItemPolicy',
 		'App\Inventory'   => 'App\Policies\InventoryPolicy',
+		'App\Coupon'      => 'App\Policies\CouponPolicy',
 	];
 
 	/**

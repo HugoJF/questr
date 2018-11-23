@@ -16,6 +16,14 @@
         {{ $options['help_block']['text'] }}
         </{{ $options['help_block']['tag'] }} >
     @endif
+
+    <?php if ($showError && isset($errors) && $errors->hasBag($errorBag)): ?>
+    <?php foreach ($errors->getBag($errorBag)->get($nameKey) as $err): ?>
+    <div <?= $options['errorAttrs'] ?>><?= $err ?></div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+
 </div>
 @push('scripts')
     <script type="text/javascript">
