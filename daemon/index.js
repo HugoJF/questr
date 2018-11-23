@@ -131,7 +131,7 @@ Server.prototype = {
         }).on('response', function (str) {
             // that.log(`Responded from RCON: ${str}`);
 
-            redisC.rpush([REDIS_KEY, str], function (err, reply) {
+            redisC.rpush([REDIS_KEY, that.ip + ':' + that.port + ' - ' + str], function (err, reply) {
                 if (err) {
                     that.log(err);
                 } else {
