@@ -25,7 +25,7 @@ app.use(cors());
 const HTTP_PORT = 10000;
 const REDIS_KEY = 'messages_staging';
 // TODO: https://api.ipify.org?format=json
-const LISTENING_IP = '189.27.83.213';
+const LISTENING_IP = '104.156.246.245';
 const DATE_NOW = Date.now();
 const LOGS_PATH = __dirname + '/logs/logs' + DATE_NOW + '.log';
 const STDOUT_PATH = __dirname + '/logs/stdout' + DATE_NOW + '.log';
