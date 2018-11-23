@@ -173,7 +173,7 @@ Server.prototype = {
             if (data.isValid) {
                 // that.log(`Received LOG ${dataCount++}: ${data.message}`);
 
-                redisC.rpush([REDIS_KEY, data.message], function (err, reply) {
+                redisC.rpush([REDIS_KEY, that.ip + ':' + that.port + ' - ' + data.message], function (err, reply) {
                     if (err) {
                         that.log(err);
                     } else {
