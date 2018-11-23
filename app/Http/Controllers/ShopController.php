@@ -44,7 +44,7 @@ class ShopController extends Controller
 		}
 
 		$cost = ceil($item->price * $duration * $durations[ $duration ]['multiplier']);
-
+		$float = $this->conditionNameToFloat($item->condition);
 
 		if (Auth::user()->balance < $cost) {
 			flash()->error('Insufficient balance to buy item!')->important();
@@ -58,6 +58,7 @@ class ShopController extends Controller
 		$inv->cost = $cost;
 		$inv->equipped = false;
 		$inv->synced = false;
+		$inv->float = $float;
 		$inv->ends_at = Carbon::now()->addDay($duration);
 
 		$inv->save();
@@ -65,5 +66,27 @@ class ShopController extends Controller
 		flash()->success("<strong>$item->market_hash_name</strong> successfully purchased for $duration days for <strong>$cost <i class=\"fas fa-coins\"></i></strong>");
 
 		return redirect()->back();
+	}
+
+	private function conditionNameToFloat($conditionName)
+	{
+		// Cache floats
+		$floats = config('constants.floats');
+
+		// Remove any white spaces
+		$trimmed = trim($conditionName);
+
+		// Generate float
+		if (array_key_exists($trimmed, $floats)) {
+			$multiplier = 10000;
+
+			list($low, $high) = $floats[ $trimmed ];
+
+			$rand = rand($low * $multiplier, $high * $multiplier);
+
+			return $rand / $multiplier;
+		} else {
+			return 2;
+		}
 	}
 }

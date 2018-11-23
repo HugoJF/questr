@@ -52,6 +52,7 @@ class GenerateShopData extends Command
 				str_contains($item->market_hash_name, 'StatTrak') ||
 				str_contains($item->market_hash_name, 'Sealed') ||
 				str_contains($item->market_hash_name, 'Sticker') ||
+				str_contains($item->market_hash_name, 'Gloves') ||
 				str_contains($item->market_hash_name, 'Souvenir');
 		});
 		$this->info("After filtering StatTrak: {$bsData->count()}");
@@ -64,7 +65,7 @@ class GenerateShopData extends Command
 				return true;
 			}
 
-			if(!$item->icon_url){
+			if (!$item->icon_url) {
 				return true;
 			}
 
@@ -72,8 +73,22 @@ class GenerateShopData extends Command
 		});
 
 		$mapped = $bsData->map(function ($item) use ($weaponData) {
-			if (preg_match('/\| (.*?) \(/', $item->market_hash_name, $matches) === 1) {
-				$item->index = $weaponData[ $matches[1] ]['index'];
+			if (preg_match('/(.*?) \| (.*?) \((.*?)\)/', $item->market_hash_name, $matches) === 1) {
+				if (!$this->isAssoc($weaponData[ $matches[2] ])) {
+					$nameToShort = config('constants.name-to-short');
+					$itemName = $matches[1];
+					$short = $nameToShort[ $itemName ];
+					$data = $weaponData[ $matches[2] ];
+					foreach ($data as $d) {
+						$classes = preg_split('/;/', $d['classes']);
+						if (in_array('weapon_'.$short, $classes)) {
+							$item->index = $d['index'];
+							break;
+						}
+					}
+				} else {
+					$item->index = $weaponData[ $matches[2] ]['index'];
+				}
 			}
 
 			return $item;
@@ -87,7 +102,7 @@ class GenerateShopData extends Command
 
 			$i = ShopItem::make();
 			$i->fill((array)$item);
-			$i->price = $item->price * 100;
+			$i->price = ceil($item->price);
 			$i->item_name = $matches[1];
 			$i->skin_name = $matches[2];
 			$i->condition = $matches[3];
@@ -127,5 +142,11 @@ class GenerateShopData extends Command
 
 			return $result->get();
 		});
+	}
+
+	function isAssoc(array $arr)
+	{
+		if (array() === $arr) return false;
+		return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 }

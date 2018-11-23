@@ -1,7 +1,6 @@
 @php
     $status = null;
     
-   
     if($quest->available || ($quest->inProgress && $quest->available)) {
         $status = 'primary';
     }

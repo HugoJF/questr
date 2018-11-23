@@ -23,4 +23,6 @@ class KVParserTest extends TestCase
 		$this->assertArrayHasKey('Gloves', $kv1->result);
 		$this->assertArrayHasKey('Skins', $kv2->result);
 	}
+
+	// TODO: should check for duplicate keys;
 }

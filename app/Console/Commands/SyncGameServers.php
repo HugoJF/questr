@@ -22,76 +22,9 @@ class SyncGameServers extends Command
 	 */
 	protected $description = 'Command description';
 
+	protected $knifeClasses;
 
-	protected $nameToShort = [
-		'AK-47'             => 'ak47',
-		'AUG'               => 'aug',
-		'AWP'               => 'awp',
-		'CZ75-Auto'         => 'cz75a',
-		'Desert Eagle'      => 'deagle',
-		'Dual Berettas'     => 'elite',
-		'FAMAS'             => 'famas',
-		'Five-SeveN'        => 'fiveseven',
-		'G3SG1'             => 'g3sg1',
-		'Galil AR'          => 'galilar',
-		'Glock-18'          => 'glock',
-		'M249'              => 'm249',
-		'M4A1-S'            => 'm4a1_silencer',
-		'M4A4'              => 'm4a1',
-		'MAC-10'            => 'mac10',
-		'MAG-7'             => 'mag7',
-		'MP5-SD'            => 'mp5sd',
-		'MP7'               => 'mp7',
-		'MP9'               => 'mp9',
-		'Negev'             => 'negev',
-		'Nova'              => 'nova',
-		'P2000'             => 'hkp2000',
-		'P250'              => 'p250',
-		'P90'               => 'p90',
-		'PP-Bizon'          => 'bizon',
-		'R8 Revolver'       => 'revolver',
-		'SCAR-20'           => 'scar20',
-		'SG 553'            => 'sg556',
-		'SSG 08'            => 'ssg08',
-		'Sawed-Off'         => 'sawedoff',
-		'Tec-9'             => 'tec9',
-		'UMP-45'            => 'ump45',
-		'USP-S'             => 'usp_silencer',
-		'XM1014'            => 'xm1014',
-		'★ Bayonet'         => 'bayonet',
-		'★ Bowie Knife'     => 'knife_survival_bowie',
-		'★ Butterfly Knife' => 'knife_butterfly',
-		'★ Falchion Knife'  => 'knife_falchion',
-		'★ Flip Knife'      => 'knife_flip',
-		'★ Gut Knife'       => 'knife_gut',
-		'★ Huntsman Knife'  => 'knife_tactical',
-		'★ Karambit'        => 'knife_karambit',
-		'★ M9 Bayonet'      => 'knife_m9_bayonet',
-		'★ Navaja Knife'    => 'knife_gypsy_jackknife',
-		'★ Shadow Daggers'  => 'knife_push',
-		'★ Stiletto Knife'  => 'knife_stiletto',
-		'★ Talon Knife'     => 'knife_widowmaker',
-		'★ Ursus Knife'     => 'knife_ursus',
-
-	];
-
-	protected $floats = [
-		'Factory New'    => [
-			0, 0.07,
-		],
-		'Minimal Wear'   => [
-			0.07, 0.15,
-		],
-		'Field-Tested'   => [
-			0.15, 0.37,
-		],
-		'Well-Worn'      => [
-			0.37, 0.44,
-		],
-		'Battle-Scarred' => [
-			0.44, 1,
-		],
-	];
+	protected $nameToShort;
 
 	/**
 	 * Create a new command instance.
@@ -100,6 +33,10 @@ class SyncGameServers extends Command
 	 */
 	public function __construct()
 	{
+		$this->knifeClasses = config('constants.knife-classes');
+		$this->nameToShort = config('constants.name-to-short');
+		$this->floats = config('constants.floats');
+
 		parent::__construct();
 	}
 
@@ -115,7 +52,7 @@ class SyncGameServers extends Command
 		$this->comment("Found $count unsynced items...");
 		foreach ($unsyncedItems as $item) {
 			$this->line("Syncing item #{$item->id}");
-			if($item->equipped) {
+			if ($item->equipped) {
 				$this->syncItem($item);
 			}
 			$item->synced = $item->equipped;
@@ -125,22 +62,38 @@ class SyncGameServers extends Command
 
 	public function syncItem(Inventory $inv)
 	{
+		// References
 		$steamId = $inv->user->steam_id;
 		$index = $inv->item->index;
 
+		// Translate user-friendly name to short name
 		$itemName = $inv->item->item_name;
 		$short = $this->weaponNameToShort($itemName);
 
-		$condition = $inv->item->condition;
-		$float = $this->conditionNameToFloat($condition);
+		// If item is a knife
+		if (array_key_exists($short, $this->knifeClasses)) {
+			$class = $this->knifeClasses[$short];
+			$this->syncKnife($steamId, $class);
+		}
 
+		$float = $inv->float;
+
+		// Sync weapon skins database
 		$this->syncColumn($steamId, $short, $index, $float);
 	}
 
-	public function syncColumn($steamid, $short, $skinIndex, $float, $trak = 0, $trakCount = 0, $tag = '')
+	public function syncKnife($steamid, $class)
 	{
-
+		// Update knife class in weapon skins database (used by game servers)
 		DB::connection('kaganus_weapons')->table('weapons')->where('steamid', $steamid)->update([
+			'knife' => $class,
+		]);
+	}
+
+	public function syncColumn($steamId, $short, $skinIndex, $float, $trak = 0, $trakCount = 0, $tag = '')
+	{
+		// Update weapon skins database (used by game servers)
+		DB::connection('kaganus_weapons')->table('weapons')->where('steamid', $steamId)->update([
 			$short                => $skinIndex,
 			"{$short}_float"      => $float,
 			"{$short}_trak"       => $trak,
@@ -151,26 +104,14 @@ class SyncGameServers extends Command
 
 	public function weaponNameToShort($weaponName)
 	{
+		// Remove any white spaces
 		$trimmed = trim($weaponName);
 
+		// Check if item exists in array before using it
 		if (array_key_exists($trimmed, $this->nameToShort)) {
 			return $this->nameToShort[ $trimmed ];
 		} else {
 			throw new \Exception("Unexpected weapon name $weaponName");
 		}
 	}
-
-	public function conditionNameToFloat($conditionName)
-	{
-		$trimmed = trim($conditionName);
-
-		if (array_key_exists($trimmed, $this->floats)) {
-			list($low, $high) = $this->floats[ $trimmed ];
-
-			return rand($low, $high);
-		} else {
-			return 1;
-		}
-	}
-
 }

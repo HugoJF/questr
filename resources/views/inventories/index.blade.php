@@ -9,6 +9,6 @@
     @include('inventories.card-deck', ['items' => $items, 'chunkSize' => 4])
     
     <div class="text-center">
-        {!! $items->links() !!}
+        {!! $items->appends(request()->query())->links() !!}
     </div>
 @endsection

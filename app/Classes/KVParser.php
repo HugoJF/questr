@@ -56,7 +56,20 @@ class KVParser
 			} else {
 				throw new \Exception('Could not continue lookaheading around: ' . substr($this->parsing, $this->index, 20));
 			}
-			$block[ $key ] = $value;
+
+			// If block is empty just set KV pair
+			if(!array_key_exists($key, $block)) {
+				$block[ $key ] = $value;
+			} else {
+				if($this->isAssoc($block[$key])) {
+					// Convert associate array to sequential array to allow future pushes
+					$old = $block[$key];
+					$block[$key] = [$old, $value];
+				} else {
+					// Just push new value to key
+					$block[$key][] = $value;
+				}
+			}
 		}
 		$this->cb();
 
@@ -103,5 +116,11 @@ class KVParser
 	public function error()
 	{
 		throw new \Exception('Error while parsing string');
+	}
+
+	function isAssoc(array $arr)
+	{
+		if (array() === $arr) return false;
+		return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 }

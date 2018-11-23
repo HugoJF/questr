@@ -12,6 +12,9 @@ const io = require('socket.io')();
 const redis = require('redis');
 const redisC = redis.createClient(); //creates a new client
 
+/***********************
+ *    CONFIGURATION    *
+ ***********************/
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
@@ -19,9 +22,10 @@ app.use(cors());
 /*******************
  *    CONSTANTS    *
  *******************/
-
 const HTTP_PORT = 10000;
-const LISTENING_IP = '200.175.233.131';
+const REDIS_KEY = 'messages_staging';
+// TODO: https://api.ipify.org?format=json
+const LISTENING_IP = '189.27.83.213';
 const DATE_NOW = Date.now();
 const LOGS_PATH = __dirname + '/logs/logs' + DATE_NOW + '.log';
 const STDOUT_PATH = __dirname + '/logs/stdout' + DATE_NOW + '.log';
@@ -30,7 +34,6 @@ const STDERR_PATH = __dirname + '/logs/errout' + DATE_NOW + '.log';
 /*********************
  *    WEB LOGGING    *
  *********************/
-
 let log_file = fs.createWriteStream(LOGS_PATH, {flags: 'w'});
 let log_stdout = process.stdout;
 
@@ -58,11 +61,11 @@ process.on('uncaughtException', function (err) {
     console.error((err && err.stack) ? err.stack : err);
 });
 
-/*******************
- *    VARIABLES    *
- *******************/
-redisC.on('connect', function() {
-    console.log('Redis is connected');
+/************************
+ *    EVENT HANDLING    *
+ ************************/
+redisC.on('connect', function () {
+    console.log('REDIS is connected');
     redisConnected = true;
 });
 
@@ -77,7 +80,6 @@ let redisConnected = false;
 /*******************
  *    FUNCTIONS    *
  *******************/
-
 function Server(hostname, name, ip, port, rconPassword, receiverPort) {
     this.hostname = hostname;
     this.name = name;
@@ -120,15 +122,21 @@ Server.prototype = {
             that.bindReceiver();
             that.authed = true;
 
+            for (let i = that.onConnectionAuth.length - 1; i >= 0; i--) {
+                let cb = that.onConnectionAuth[i];
+                if (cb() === true)
+                    that.onConnectionAuth.splice(i, 1);
+            }
+
         }).on('response', function (str) {
             // that.log(`Responded from RCON: ${str}`);
 
-            redisC.rpush(['messages', str], function (err, reply) {
-               if(err) {
-                   that.log(err);
-               } else {
-                   that.log(reply);
-               }
+            redisC.rpush([REDIS_KEY, str], function (err, reply) {
+                if (err) {
+                    that.log(err);
+                } else {
+                    that.log(reply);
+                }
             });
 
             for (let i = that.onConnectionResponse.length - 1; i >= 0; i--) {
@@ -165,8 +173,8 @@ Server.prototype = {
             if (data.isValid) {
                 // that.log(`Received LOG ${dataCount++}: ${data.message}`);
 
-                redisC.rpush(['messages', data.message], function (err, reply) {
-                    if(err) {
+                redisC.rpush([REDIS_KEY, data.message], function (err, reply) {
+                    if (err) {
                         that.log(err);
                     } else {
                         that.log(reply);
@@ -192,7 +200,9 @@ Server.prototype = {
     },
 
     bindReceiver: function () {
-        this.connection.send(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`)
+        this.execute(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`, (res) => {
+            this.log('Bound to receiver!');
+        })
     },
 
     execute: function (command, callback) {
@@ -210,6 +220,9 @@ Server.prototype = {
         this.connection.send(command);
 
         this.onConnectionResponse.push((res) => {
+            if (!util.isFunction(callback)) {
+                console.log(callback);
+            }
             callback(res);
             return true;
         })
@@ -256,12 +269,9 @@ function readServers() {
         sv.startRconConnection();
         sv.startReceiver();
         sv.bindReceiver();
-        sv.syncExecute('mp_logdetail 3', () => {
-            log('MP_LOGDETAIL SET');
-            log('MP_LOGDETAIL SET');
-            log('MP_LOGDETAIL SET');
-            log('MP_LOGDETAIL SET');
-        })
+        sv.execute('mp_logdetail 3', (res) => {
+            sv.log(`Forcing 'mp_logdetail 3':  ${res}`);
+        });
     }
 }
 

@@ -29,7 +29,7 @@ class SolveQueuedEvents implements ShouldQueue
 	 */
 	public function __construct(Command $command)
 	{
-		$this->messageKey = config('app.redis-event-key');
+		$this->messageKey = config('app.redis-event-key', 'messages');
 		$this->command = $command;
 		$command->info('Hooked');
 	}

@@ -45,26 +45,54 @@ class User extends Authenticatable
 		return $this->hasMany(Inventory::class);
 	}
 
+	public function transactions()
+	{
+		return $this->hasMany(Transactions::class);
+	}
+
 	public function getBalanceAttribute($refresh = false)
 	{
 		if ($refresh) {
 			cache()->forget("user-$this->id-balance");
 		}
 
+		return $this->computeBalance();
+
 		return cache()->remember("user-$this->id-balance", 5, function () {
-			$rewards = Auth::user()->rewards()->with('questProgress', 'questProgress.quest')->get();
-			$inventory = Auth::user()->inventories()->get();
+			//			$rewards = Auth::user()->rewards()->with('questProgress', 'questProgress.quest')->get();
+			//			$inventory = Auth::user()->inventories()->get();
+			//
+			//			$rewardBalance = $rewards->reduce(function ($carry, $item) {
+			//				return $carry + $item->questProgress->quest->reward;
+			//			});
+			//
+			//			$inventoryBalance = $inventory->reduce(function ($carry, $item) {
+			//				return $carry + $item->cost;
+			//			});
+			//
+			//			if ($this->isAdmin()) {
+			//				return 9999999;
+			//			} else {
+			//				return $rewardBalance - $inventoryBalance;
+			//			}
 
-			$rewardBalance = $rewards->reduce(function ($carry, $item) {
-				return $carry + $item->questProgress->quest->reward;
-			});
-
-			$inventoryBalance = $inventory->reduce(function ($carry, $item) {
-				return $carry + $item->cost;
-			});
-
-			return $rewardBalance - $inventoryBalance;
+			if ($this->isAdmin()) {
+				return 9999999;
+			} else {
+				$this->computeBalance();
+			}
 		});
+	}
+
+	private function computeBalance()
+	{
+		$transactions = $this->transactions;
+
+		$balance = $transactions->reduce(function ($carry, $item) {
+			return $carry + $item->value;
+		});
+
+		return $balance;
 	}
 
 	public function isAdmin()
