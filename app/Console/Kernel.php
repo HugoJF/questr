@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
 		$schedule->command('inventory:clear')->daily();
+		$schedule->command('weapons:sync')->everyMinute();
+		$schedule->command('events:solve')->everyMinute();
     }
 
     /**
