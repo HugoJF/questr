@@ -146,6 +146,8 @@ class QuestController extends Controller
 			'cost'        => 'required|numeric|gte:0',
 			'goal'        => 'required|numeric|gt:0',
 			'reward'      => 'required|numeric|gt:0',
+			'hidden'      => 'boolean',
+			'code'        => 'alpha_num',
 			'startAt'     => 'required|date_format:Y-m-d h:i:s',
 			'endAt'       => 'required|date_format:Y-m-d h:i:s',
 		]);

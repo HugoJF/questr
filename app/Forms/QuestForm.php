@@ -14,6 +14,8 @@ class QuestForm extends Form
 		$this->type();
 		$this->cost();
 		$this->goal();
+		$this->hidden();
+		$this->code();
 		$this->reward();
 		$this->start();
 		$this->end();
@@ -104,5 +106,22 @@ class QuestForm extends Form
 			],
 			'text'           => $text ?? '',
 		];
+	}
+
+	private function hidden()
+	{
+		$this->add('hidden', 'checkbox', [
+			'label'      => 'Hidden quest',
+			'help_block' => $this->getHelpBlock('Quests that can only be visible with direct link'),
+		]);
+	}
+
+	private function code()
+	{
+		$this->add('code', 'text', [
+			'label'      => 'Quest title',
+			'rules'      => ['required'],
+			'help_block' => $this->getHelpBlock('Short quest description'),
+		]);
 	}
 }
