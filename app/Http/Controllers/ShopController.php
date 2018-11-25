@@ -104,7 +104,7 @@ class ShopController extends Controller
 
 		// Generate float
 		if (array_key_exists($trimmed, $floats)) {
-			$multiplier = 10000;
+			$multiplier = 1000000;
 
 			list($low, $high) = $floats[ $trimmed ];
 

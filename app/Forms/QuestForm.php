@@ -14,9 +14,9 @@ class QuestForm extends Form
 		$this->type();
 		$this->cost();
 		$this->goal();
+		$this->reward();
 		$this->hidden();
 		$this->code();
-		$this->reward();
 		$this->start();
 		$this->end();
 	}
@@ -119,9 +119,8 @@ class QuestForm extends Form
 	private function code()
 	{
 		$this->add('code', 'text', [
-			'label'      => 'Quest title',
-			'rules'      => ['required'],
-			'help_block' => $this->getHelpBlock('Short quest description'),
+			'label'      => 'Quest hidden code',
+			'help_block' => $this->getHelpBlock('Code used to access hidden quest'),
 		]);
 	}
 }
