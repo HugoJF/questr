@@ -27,8 +27,7 @@ before_script:
 
 
 script:
-    - php artisan dusk
-    - php artisan dusk:email-screenshots
+    - phpunit
 
 
 after_success:
