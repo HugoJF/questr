@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class Quest extends Model
 {
 	protected $fillable = [
-		'title', 'description', 'cost', 'type', 'goal', 'reward', 'startAt', 'endAt',
+		'title', 'description', 'cost', 'type', 'goal', 'reward', 'hidden', 'code', 'startAt', 'endAt',
 	];
 
 	protected $dates = [

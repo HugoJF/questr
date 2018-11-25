@@ -36,7 +36,7 @@ class RouteServiceProvider extends ServiceProvider
 		Route::bind('quest', function ($value) {
 			if (is_numeric($value)) {
 				$quest = Quest::find($value);
-				if (!$quest->hidden) {
+				if ($quest && !$quest->hidden) {
 					return $quest;
 				}
 			} else {

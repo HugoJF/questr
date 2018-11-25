@@ -156,10 +156,16 @@ class QuestController extends Controller
 
 		$quest->fill($validated);
 
+		$quest->hidden = $request->input('hidden') ? true : false;
+
 		$quest->save();
 
 		flash()->success("Quest $quest->title successfully created!");
 
-		return redirect()->route('quests.show', $quest);
+		if($quest->hidden) {
+			return redirect()->route('quests.show', $quest->code);
+		} else {
+			return redirect()->route('quests.show', $quest);
+		}
 	}
 }
