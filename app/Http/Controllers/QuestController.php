@@ -18,7 +18,7 @@ class QuestController extends Controller
 {
 	public function index()
 	{
-		$quests = Quest::orderBy('created_at', 'DESC')->paginate(12);
+		$quests = Quest::visible()->orderBy('created_at', 'DESC')->paginate(12);
 
 		return view('quests.index', [
 			'quests' => $quests,

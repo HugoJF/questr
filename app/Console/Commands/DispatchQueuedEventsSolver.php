@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use App\Classes\EventParser;
 use App\Classes\EventSolver;
 use App\Jobs\SolveQueuedEvents;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 
 class DispatchQueuedEventsSolver extends Command

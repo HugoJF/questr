@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Inventory;
+use App\Quest;
 use App\QuestFilter;
 use App\ShopItem;
 use App\User;
@@ -27,13 +28,18 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
 
 		Route::model('questfilter', QuestFilter::class);
 		Route::model('shopitem', ShopItem::class);
 		Route::model('inventory', Inventory::class);
+		Route::bind('quest', function ($value) {
+			if(is_numeric($value)) {
+				return Quest::find($value);
+			} else {
+				return Quest::where('code', $value)->first();
+			}
+		});
     }
 
     /**

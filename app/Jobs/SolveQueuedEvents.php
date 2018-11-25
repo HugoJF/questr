@@ -41,6 +41,8 @@ class SolveQueuedEvents implements ShouldQueue
 	 */
 	public function handle()
 	{
+		$start = round(microtime(true) * 1000);
+
 		$listSize = Redis::command('llen', [$this->messageKey]);
 
 		$listSize = $listSize > $this->eventsPerJob ? $this->eventsPerJob : $listSize;
@@ -57,6 +59,11 @@ class SolveQueuedEvents implements ShouldQueue
 				$eventSolver->solve($event);
 			}
 		}
+
+		$end = round(microtime(true) * 1000);
+		$duration = $end - $start;
+
+		Log::info("Handling of $listSize events took: $duration ms");
 	}
 
 	private function info($message)

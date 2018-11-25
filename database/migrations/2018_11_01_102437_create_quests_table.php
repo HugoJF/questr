@@ -19,6 +19,9 @@ class CreateQuestsTable extends Migration
             $table->string('title');
             $table->text('description');
 
+            $table->boolean('hidden')->default(false);
+            $table->string('code')->nullable();
+
             $table->string('type');
             $table->integer('cost');
             $table->integer('goal');

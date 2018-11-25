@@ -40,6 +40,16 @@ class Quest extends Model
 		return $runner;
 	}
 
+	public function scopeVisible($query)
+	{
+		return $query->where('hidden', 0);
+	}
+
+	public function scopeHidden($query)
+	{
+		return $query->where('hidden', 1);
+	}
+
 	public function getAvailableAttribute()
 	{
 		return $this->startAt->isPast() && $this->endAt->isFuture();
