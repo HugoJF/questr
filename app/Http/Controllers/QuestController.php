@@ -7,6 +7,7 @@ use App\Forms\QuestForm;
 use App\Quest;
 use App\QuestProgress;
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -89,6 +90,17 @@ class QuestController extends Controller
 
 		if ($questProgress->user != Auth::user()) {
 			flash()->error('You cannot finish quests that are not yours!')->important();
+
+			return back();
+		}
+
+		// Update quest progress as finished
+		$questProgress->finished_at = Carbon::now();
+		$saved = $questProgress->save();
+
+		// Check if quest was updated as finished
+		if (!$saved) {
+			flash()->success("Could not update quest $quest->title!");
 
 			return back();
 		}
