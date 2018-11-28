@@ -147,9 +147,9 @@ class QuestController extends Controller
 			'goal'        => 'required|numeric|gt:0',
 			'reward'      => 'required|numeric|gt:0',
 			'hidden'      => 'boolean',
-			'code'        => 'alpha_num',
-			'startAt'     => 'required|date_format:Y-m-d h:i:s',
-			'endAt'       => 'required|date_format:Y-m-d h:i:s',
+			'code'        => 'alpha_num|nullable',
+			'startAt'     => 'required|date_format:Y-m-d H:i:s',
+			'endAt'       => 'required|date_format:Y-m-d H:i:s',
 		]);
 
 		$quest = Quest::make();

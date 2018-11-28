@@ -19,6 +19,18 @@ class ShopController extends Controller
 			$items->where('market_hash_name', 'LIKE', '%' . $request->input('query') . '%');
 		}
 
+		if ($request->has('conditions')) {
+			$items->whereIn('condition', $request->input('conditions'));
+		}
+
+		if($request->has('skins')) {
+			$items->whereIn('skin_name', $request->input('skins'));
+		}
+
+		if($request->has('weapons')) {
+			$items->whereIn('item_name', $request->input('weapons'));
+		}
+
 		$items = $items->paginate(12);
 
 		return view('shop.index', [

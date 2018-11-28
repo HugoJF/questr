@@ -13,8 +13,9 @@
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
     
     <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"><!-- Latest compiled and minified CSS -->
     <link href="{{ asset('/css/summernote.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/csgo-questr.css') }}" rel="stylesheet">
     
@@ -45,23 +46,54 @@
 </head>
 
 <body>
-
-<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <h5 class="my-0 mr-md-auto font-weight-normal"><a href="{{ route('home') }}">CSGO-Questr</a></h5>
-    <nav class="my-2 my-md-0 mr-md-3">
-        @auth
-            <a data-toggle="tooltip" data-placement="bottom" title="Balances values are cached for 5min."><span class="badge badge-dark">Balance: {{ Auth::user()->balance ?? 0}} <i class="fas fa-coins"></i></span></a>
-        @endauth
-        <a class="p-2 text-dark" href="{{ route('quests.index') }}">Quests</a>
-        <a class="p-2 text-dark" href="{{ route('quests.create') }}">Create quest</a>
-        <a class="p-2 text-dark" href="{{ route('shop.index') }}">Shop</a>
-        <a class="p-2 text-dark" href="{{ route('inventory.index') }}">Inventory</a>
-        <a class="p-2 text-dark" data-toggle="modal" data-target="#use-token" href="#">Use coupon</a>
-    </nav>
-    @guest
-        <a class="btn btn-outline-primary" href="{{ route('auth.steam') }}">Sign in</a>
-    @endguest
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <a class="navbar-brand" href="#">Questr</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse mr-5" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            @auth
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Balances values are cached for 5min."><span class="badge badge-dark">Balance: {{ Auth::user()->balance ?? 0}} <i class="fas fa-coins"></i></span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Quests
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('quests.index') }}">List</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('quests.create') }}">Create</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('shop.index') }}">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('inventory.index') }}">Inventory</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Coupons
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#use-token" href="#">Use</a>
+                    </div>
+                </li>
+            @endauth
+            @guest
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary" href="{{ route('auth.steam') }}">Sign in</a>
+                </li>
+            @endguest
+        </ul>
+    </div>
+</nav>
 <div class="container">
     @include('flash::message')
     
@@ -132,20 +164,27 @@
 </div>
 <!-- Bootstrap core JavaScript
 ================================================== -->
+
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+
 <script>window.jQuery || document.write('<script src="{{ asset('/js/vendor/jquery-slim.min.js') }}"><\/script>')</script>
 <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
 <script src="{{ asset('/js/vendor/holder.min.js') }}"></script>
 <script src="{{ asset('/js/moment.min.js') }}"></script>
 <script src="{{ asset('/js/summernote.js') }}"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
 
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
+<script>$.fn.selectpicker.Constructor.DEFAULTS.iconBase='fa';</script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-    
+
     Holder.addTheme('thumb', {
         bg: '#55595c',
         fg: '#eceeef',

@@ -31,8 +31,8 @@ class CouponController extends Controller
 		$request->validate([
 			'code'    => 'required',
 			'reward'  => 'required|numeric|gt:0',
-			'startAt' => 'required|date_format:Y-m-d h:i:s',
-			'endAt'   => 'required|date_format:Y-m-d h:i:s',
+			'startAt' => 'required|date_format:Y-m-d H:i:s',
+			'endAt'   => 'required|date_format:Y-m-d H:i:s',
 		]);
 
 		$coupon = Coupon::make();
