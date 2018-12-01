@@ -17,7 +17,6 @@
     
     @include('shop.filters')
     
-    
     @include('shop.card-deck', ['items' => $items, 'chunkSize' => 4])
     
     <div class="text-center">
