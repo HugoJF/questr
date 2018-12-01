@@ -171,9 +171,9 @@
 
 <script>window.jQuery || document.write('<script src="{{ asset('/js/vendor/jquery-slim.min.js') }}"><\/script>')</script>
 <script src="{{ asset('/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('/js/moment.min.js') }}"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
 <script src="{{ asset('/js/vendor/holder.min.js') }}"></script>
-<script src="{{ asset('/js/moment.min.js') }}"></script>
 <script src="{{ asset('/js/summernote.js') }}"></script>
 
 <!-- Latest compiled and minified JavaScript -->
