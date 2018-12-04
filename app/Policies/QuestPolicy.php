@@ -25,7 +25,7 @@ class QuestPolicy
 	 *
 	 * @return mixed
 	 */
-	public function view(User $user, Quest $quest)
+	public function view(User $user, Quest $quest = null)
 	{
 		return true;
 	}

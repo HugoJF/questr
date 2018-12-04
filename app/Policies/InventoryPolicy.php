@@ -25,7 +25,7 @@ class InventoryPolicy
 	 *
 	 * @return mixed
 	 */
-	public function view(User $user, Inventory $inventory)
+	public function view(User $user, Inventory $inventory = null)
 	{
 		return true;
 	}

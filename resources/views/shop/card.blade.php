@@ -34,7 +34,7 @@
                     <ul class="mt-2 list-unstyled">
                         @foreach(config('app.durations') as $key => $dur)
                             <li><strong>{{ $dur['title'] }}:</strong> {{ ceil($item->price * intval($key) * $dur['multiplier']) }} <i class="fas fa-coins"></i>
-                                <small class="ml-2 text-muted">({{ $item->price * $dur['multiplier'] }} <i class="fas fa-coins"></i> per day)</small>
+                                <small class="ml-2 text-muted">({{ ceil($item->price * $dur['multiplier']) }} <i class="fas fa-coins"></i> per day)</small>
                             </li>
                         @endforeach
                     </ul>
@@ -46,6 +46,15 @@
                     @endphp
                     <div class="form-group">
                         {!! Form::select('duration', $durations, null, ['class' => 'my-3 form-control']) !!}
+                    </div>
+    
+                    <label for="tag" class="control-label">
+                        <strong>Weapon tag:</strong> 500
+                        <i class="fas fa-coins"></i>
+                        <small class="text-muted">(leave empty if you don't want a tag)</small>
+                    </label>
+                    <div class="form-group">
+                        {!! Form::text('tag', null, ['class' => 'form-control', 'placeholder' => 'No weapon tag', 'size' => '32']) !!}
                     </div>
                 </div>
                 <div class="modal-footer">

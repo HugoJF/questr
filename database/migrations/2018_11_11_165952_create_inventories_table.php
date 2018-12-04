@@ -19,6 +19,7 @@ class CreateInventoriesTable extends Migration
             $table->boolean('equipped');
             $table->boolean('synced');
             $table->integer('cost');
+            $table->string('tag', 32);
             $table->float('float', 8, 6);
             $table->unsignedInteger('user_id')->references('id')->on('users');
             $table->unsignedInteger('item_id')->references('id')->on('shop_items');

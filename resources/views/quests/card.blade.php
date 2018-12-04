@@ -68,11 +68,11 @@
         @elseif($quest->finished)
             <a href="#" class="btn btn-lg btn-block btn-success shadow-sm disabled">Finished</a>
         @elseif($quest->success && $quest->available)
-            <a href="{{ route('quests.finish', $quest) }}" class="btn btn-lg btn-block btn-success shadow-sm">Finish</a>
+            <a id="finish" href="{{ route('quests.finish', $quest) }}" class="btn btn-lg btn-block btn-success shadow-sm">Finish</a>
         @elseif($quest->inProgress && $quest->available)
-            <a href="{{ route('quests.show', $quest) }}" class="btn btn-lg btn-block btn-primary shadow-sm">View details</a>
+            <a id="details" href="{{ route('quests.show', $quest) }}" class="btn btn-lg btn-block btn-primary shadow-sm">View details</a>
         @elseif($quest->available)
-            <a href="{{ route('quests.start', $quest) }}" class="btn btn-lg btn-block btn-outline-primary shadow-sm">Start</a>
+            <a id="start" href="{{ route('quests.start', $quest) }}" class="btn btn-lg btn-block btn-outline-primary shadow-sm">Start</a>
         @elseif($quest->failed)
             <a href="#" class="btn btn-lg btn-block btn-danger disabled">Failed</a>
         @elseif($quest->expired)

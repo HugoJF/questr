@@ -34,6 +34,18 @@ class QuestController extends Controller
 
 	public function start(Quest $quest)
 	{
+		if ($quest->startAt->isFuture()) {
+			flash()->error('You cannot start locked quests!')->important();
+
+			return back();
+		}
+
+		if ($quest->endAt->isPast()) {
+			flash()->error('You cannot start expired quests!')->important();
+
+			return back();
+		}
+
 		if (Auth::user()->questProgresses()->where('quest_id', $quest->id)->exists()) {
 			flash()->warning('Quest is already in progress!')->important();
 
@@ -162,7 +174,7 @@ class QuestController extends Controller
 
 		flash()->success("Quest $quest->title successfully created!");
 
-		if($quest->hidden) {
+		if ($quest->hidden) {
 			return redirect()->route('quests.show', $quest->code);
 		} else {
 			return redirect()->route('quests.show', $quest);

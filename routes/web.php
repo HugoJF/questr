@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
 	return view('home', [
-		'randomQuests' => \App\Quest::inRandomOrder()->limit(3)->get(),
+		'randomQuests' => \App\Quest::visible()->inRandomOrder()->limit(3)->get(),
 	]);
 })->name('home');
 

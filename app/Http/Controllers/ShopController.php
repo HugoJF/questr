@@ -47,6 +47,11 @@ class ShopController extends Controller
 
 	public function buy(Request $request, ShopItem $item)
 	{
+		// Validate tag
+		$request->validate([
+			'tag' => 'nullable|alpha_dash|digits_between:0,32',
+		]);
+
 		// Cache values for buy durations
 		$durations = config('app.durations');
 		$duration = intval($request->input('duration'));
@@ -58,8 +63,15 @@ class ShopController extends Controller
 			return redirect()->back();
 		}
 
+		// Check if tag was supplied
+		if($request->input('tag')) {
+			$tagPrice = 500;
+		} else {
+			$tagPrice = 0;
+		}
+
 		// Recompute price with correct multiplier
-		$cost = ceil($item->price * $duration * $durations[ $duration ]['multiplier']);
+		$cost = ceil($item->price * $duration * $durations[ $duration ]['multiplier']) + $tagPrice;
 
 		// Check if user has enough balance to buy the item
 		if (Auth::user()->balance < $cost) {
@@ -93,6 +105,7 @@ class ShopController extends Controller
 		$inv->user()->associate(Auth::user());
 		$inv->item()->associate($item);
 		$inv->cost = $cost;
+		$inv->tag = $request->input('tag');
 		$inv->equipped = false;
 		$inv->synced = false;
 		$inv->float = $float;
@@ -124,7 +137,7 @@ class ShopController extends Controller
 
 			return $rand / $multiplier;
 		} else {
-			return 2;
+			return 1;
 		}
 	}
 }
