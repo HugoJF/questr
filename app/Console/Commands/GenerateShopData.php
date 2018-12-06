@@ -49,13 +49,12 @@ class GenerateShopData extends Command
 		$this->info("Collected {$bsData->count()} prices");
 		$bsData = $bsData->reject(function ($item) {
 			return
-				str_contains($item->market_hash_name, 'StatTrak') ||
 				str_contains($item->market_hash_name, 'Sealed') ||
 				str_contains($item->market_hash_name, 'Sticker') ||
 				str_contains($item->market_hash_name, 'Gloves') ||
 				str_contains($item->market_hash_name, 'Souvenir');
 		});
-		$this->info("After filtering StatTrak: {$bsData->count()}");
+		$this->info("After filtering: {$bsData->count()}");
 		$bsData = $bsData->reject(function ($item) use ($weaponData) {
 			if (preg_match('/\| (.*?) \(/', $item->market_hash_name, $matches) !== 1) {
 				return true;
@@ -73,21 +72,25 @@ class GenerateShopData extends Command
 		});
 
 		$mapped = $bsData->map(function ($item) use ($weaponData) {
-			if (preg_match('/(.*?) \| (.*?) \((.*?)\)/', $item->market_hash_name, $matches) === 1) {
-				if (!$this->isAssoc($weaponData[ $matches[2] ])) {
+			if (preg_match('/(★ )?(StatTrak™)? ?(.*?) \| (.*?) \((.*?)\)/', $item->market_hash_name, $matches) === 1) {
+				if (!$this->isAssoc($weaponData[ $matches[4] ])) {
 					$nameToShort = config('constants.name-to-short');
-					$itemName = $matches[1];
-					$short = $nameToShort[ $itemName ];
-					$data = $weaponData[ $matches[2] ];
+					$itemName = ($matches[1] ?? '') . $matches[3];
+//					try {
+						$short = $nameToShort[ $itemName ];
+//					} catch (\Exception $e) {
+//						dd($item->market_hash_name);
+//					}
+					$data = $weaponData[ $matches[4] ];
 					foreach ($data as $d) {
 						$classes = preg_split('/;/', $d['classes']);
-						if (in_array('weapon_'.$short, $classes)) {
+						if (in_array('weapon_' . $short, $classes)) {
 							$item->index = $d['index'];
 							break;
 						}
 					}
 				} else {
-					$item->index = $weaponData[ $matches[2] ]['index'];
+					$item->index = $weaponData[ $matches[4] ]['index'];
 				}
 			}
 
@@ -98,14 +101,19 @@ class GenerateShopData extends Command
 		ShopItem::truncate();
 
 		$mapped->each(function ($item, $key) {
-			preg_match('/(.*?) \| (.*?) \((.*?)\)/', $item->market_hash_name, $matches);
+			preg_match('/(★ )?(StatTrak™)? ?(.*?) \| (.*?) \((.*?)\)/', $item->market_hash_name, $matches);
 
 			$i = ShopItem::make();
 			$i->fill((array)$item);
 			$i->price = ceil($item->price);
-			$i->item_name = $matches[1];
-			$i->skin_name = $matches[2];
-			$i->condition = $matches[3];
+			if ($matches[2]) {
+				$i->stattrak = true;
+			} else {
+				$i->stattrak = false;
+			}
+			$i->item_name = trim(($matches[1] ?? '') . ' ' . $matches[3]);
+			$i->skin_name = $matches[4];
+			$i->condition = $matches[5];
 			$i->save();
 		});
 	}
@@ -146,7 +154,9 @@ class GenerateShopData extends Command
 
 	function isAssoc(array $arr)
 	{
-		if (array() === $arr) return false;
+		if ([] === $arr)
+			return false;
+
 		return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 }

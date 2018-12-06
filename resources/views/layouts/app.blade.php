@@ -94,7 +94,7 @@
         </ul>
     </div>
 </nav>
-<div class="container">
+<div class="pt-3 container">
     @include('flash::message')
     
     @yield('content')
@@ -179,7 +179,7 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
 
-<script>$.fn.selectpicker.Constructor.DEFAULTS.iconBase='fa';</script>
+<script>$.fn.selectpicker.Constructor.DEFAULTS.iconBase = 'fa';</script>
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()

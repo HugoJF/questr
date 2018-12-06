@@ -77,9 +77,11 @@ class SyncGameServers extends Command
 		}
 
 		$float = $inv->float;
+		$statTrak = (boolean) $inv->item->stattrak;
+		$tag = $inv->tag;
 
 		// Sync weapon skins database
-		$this->syncColumn($steamId, $short, $index, $float);
+		$this->syncColumn($steamId, $short, $index, $float, $statTrak, 0, $tag);
 	}
 
 	public function syncKnife($steamid, $class)
@@ -97,7 +99,8 @@ class SyncGameServers extends Command
 			$short                => $skinIndex,
 			"{$short}_float"      => $float,
 			"{$short}_trak"       => $trak,
-			"{$short}_trak_count" => $trakCount,
+			// Avoid resetting trak_count
+//			"{$short}_trak_count" => $trakCount,
 			"{$short}_tag"        => $tag,
 		]);
 	}

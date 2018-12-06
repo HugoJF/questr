@@ -21,6 +21,7 @@ class CreateShopItemsTable extends Migration
 			$table->string('item_name');
 			$table->string('skin_name');
 			$table->string('condition');
+			$table->boolean('stattrak');
 			$table->integer('price');
 			$table->text('icon_url');
 			$table->string('name_color')->nullable();

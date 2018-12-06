@@ -49,7 +49,7 @@ class ShopController extends Controller
 	{
 		// Validate tag
 		$request->validate([
-			'tag' => 'nullable|alpha_dash|digits_between:0,32',
+			'tag' => 'nullable|between:0,32',
 		]);
 
 		// Cache values for buy durations
@@ -105,7 +105,7 @@ class ShopController extends Controller
 		$inv->user()->associate(Auth::user());
 		$inv->item()->associate($item);
 		$inv->cost = $cost;
-		$inv->tag = $request->input('tag');
+		$inv->tag = trim($request->input('tag'));
 		$inv->equipped = false;
 		$inv->synced = false;
 		$inv->float = $float;

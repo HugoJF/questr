@@ -7,6 +7,9 @@
             @else
                 <h4>Expired</h4>
             @endif
+            @if($item->tag)
+                <h5>Tag: {{ $item->tag }}</h5>
+            @endif
         </li>
     </ul>
     @if($item->expired)
