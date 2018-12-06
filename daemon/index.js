@@ -23,7 +23,8 @@ app.use(cors());
  *    CONSTANTS    *
  *******************/
 const HTTP_PORT = 10000;
-const REDIS_KEY = 'messages_staging';
+const REDIS_KEY = 'messages';
+const REDIS_STAGING_KEY = 'messages_staging';
 // TODO: https://api.ipify.org?format=json
 const LISTENING_IP = '104.156.246.245';
 const DATE_NOW = Date.now();
@@ -131,6 +132,13 @@ Server.prototype = {
         }).on('response', function (str) {
             // that.log(`Responded from RCON: ${str}`);
 
+            redisC.rpush([REDIS_STAGING_KEY, that.ip + ':' + that.port + ' - ' + str], function (err, reply) {
+                if (err) {
+                    that.log(err);
+                } else {
+                    that.log(reply);
+                }
+            });
             redisC.rpush([REDIS_KEY, that.ip + ':' + that.port + ' - ' + str], function (err, reply) {
                 if (err) {
                     that.log(err);
@@ -173,6 +181,13 @@ Server.prototype = {
             if (data.isValid) {
                 // that.log(`Received LOG ${dataCount++}: ${data.message}`);
 
+                redisC.rpush([REDIS_STAGING_KEY, that.ip + ':' + that.port + ' - ' + data.message], function (err, reply) {
+                    if (err) {
+                        that.log(err);
+                    } else {
+                        that.log(reply);
+                    }
+                });
                 redisC.rpush([REDIS_KEY, that.ip + ':' + that.port + ' - ' + data.message], function (err, reply) {
                     if (err) {
                         that.log(err);
