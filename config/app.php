@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'name'            => env('APP_NAME', 'Laravel'),
+	'name' => env('APP_NAME', 'Laravel'),
 
 	'bit-skins-key'   => env('BIT_SKINS_KEY'),
 	'redis-event-key' => env('REDIS_EVENT_KEY'),
@@ -233,6 +233,7 @@ return [
 		'URL'          => Illuminate\Support\Facades\URL::class,
 		'Validator'    => Illuminate\Support\Facades\Validator::class,
 		'View'         => Illuminate\Support\Facades\View::class,
+		'Sentry'       => Sentry\SentryLaravel\SentryFacade::class,
 
 	],
 
