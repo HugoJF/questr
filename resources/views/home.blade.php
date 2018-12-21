@@ -2,8 +2,8 @@
 
 @section('content')
     
-        <div class="pricing-header px-2 py-2 pt-md-5 pb-md-4 mx-auto text-center">
-            <h1 class="display-4">Top quests</h1>
+        <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-4">Random quests</h1>
             <p class="lead">Random selected quests!</p>
         </div>
         @include('quests.card-deck', ['quests' => $randomQuests])
