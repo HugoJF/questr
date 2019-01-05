@@ -16,6 +16,11 @@ class Quest extends Model
 		'startAt', 'endAt',
 	];
 
+	public function getRouteKeyName()
+	{
+		return $this->getAttribute('hidden') ? 'code' : parent::getRouteKeyName();
+	}
+
 	public function questProgresses()
 	{
 		return $this->hasMany(QuestProgress::class);

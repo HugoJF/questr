@@ -19,7 +19,7 @@ class FrontPageTest extends DuskTestCase
 	{
 		$this->browse(function (Browser $browser) {
 			$browser->visit(new HomePage)
-					->assertSee('Top quests');
+					->assertSee('Random quests');
 		});
 	}
 

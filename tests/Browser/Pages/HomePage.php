@@ -26,7 +26,7 @@ class HomePage extends Page
 	public function assert(Browser $browser)
 	{
 		$browser->assertPathIs($this->url())
-				->assertSee('Top quests');
+				->assertSee('Random quests');
 	}
 
 	/**

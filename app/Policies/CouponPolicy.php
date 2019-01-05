@@ -17,12 +17,27 @@ class CouponPolicy
 		}
 	}
 
+	public function index(User $user)
+	{
+		return false;
+	}
+
+	public function edit(User $user)
+	{
+		return false;
+	}
+
 	public function use(User $user, Coupon $coupon)
 	{
 		return true;
 	}
 
 	public function create(User $user, Coupon $coupon)
+	{
+		return false;
+	}
+
+	public function delete(User $user, Coupon $coupon)
 	{
 		return false;
 	}

@@ -18,7 +18,7 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'username', 'steam_id', 'email', 'password',
+		'name', 'username', 'steam_id', 'email', 'password', 'avatar',
 	];
 
 	/**
@@ -61,6 +61,7 @@ class User extends Authenticatable
 			cache()->forget("user-$this->id-balance");
 		}
 
+		// Dev only
 		return $this->computeBalance();
 
 		return cache()->remember("user-$this->id-balance", 5, function () {
@@ -80,7 +81,7 @@ class User extends Authenticatable
 			return $carry + $item->value;
 		});
 
-		return $balance;
+		return $balance ?? 0;
 	}
 
 	public function isAdmin()

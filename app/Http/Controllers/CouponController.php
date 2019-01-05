@@ -12,6 +12,16 @@ use Kris\LaravelFormBuilder\FormBuilder;
 
 class CouponController extends Controller
 {
+
+	public function index()
+	{
+		$coupons = Coupon::all();
+
+		return view('coupon.index', [
+			'coupons' => $coupons,
+		]);
+	}
+
 	public function create(FormBuilder $formBuilder)
 	{
 		$form = $formBuilder->create(CouponForm::class, [
@@ -22,6 +32,21 @@ class CouponController extends Controller
 		return view('form', [
 			'title'       => 'New coupon code form',
 			'submit_text' => 'Create new coupon',
+			'form'        => $form,
+		]);
+	}
+
+	public function edit(FormBuilder $formBuilder, Coupon $coupon)
+	{
+		$form = $formBuilder->create(CouponForm::class, [
+			'method' => 'PATCH',
+			'route'  => ['coupon.update', $coupon],
+			'model'  => $coupon,
+		]);
+
+		return view('form', [
+			'title'       => "Updating coupon $coupon->code",
+			'submit_text' => 'Update coupon',
 			'form'        => $form,
 		]);
 	}
@@ -41,9 +66,24 @@ class CouponController extends Controller
 
 		$coupon->save();
 
-		flash()->success("Coupon {$coupon->code} created!");
+		flash()->success("Coupon <strong>{$coupon->code}</strong> created!");
 
 		return redirect()->route('home');
+	}
+
+	public function update(Request $request, Coupon $coupon)
+	{
+		$coupon->fill($request->all());
+
+		$saved = $coupon->save();
+
+		if ($saved) {
+			flash()->success("Coupon <strong>$coupon->code</strong> was updated successfully!");
+		} else {
+			flash()->error("Coupon <strong>$coupon->code</strong> could not be updated successfully!");
+		}
+
+		return redirect()->route('coupon.index');
 	}
 
 	public function use(Request $request)
@@ -113,6 +153,19 @@ class CouponController extends Controller
 
 		// Notify user of success
 		flash()->success("Coupon used successfully! <strong>You got rewarded with {$coupon->reward}</strong> <i class=\"fas fa-coins\"></i>.");
+
+		return back();
+	}
+
+	public function delete(Coupon $coupon)
+	{
+		$deleted = $coupon->delete();
+
+		if ($deleted) {
+			flash()->success("Coupon <strong>$coupon->code</strong> was deleted successfully!");
+		} else {
+			flash()->error("Coupon <strong>$coupon->code</strong> could not be deleted!");
+		}
 
 		return back();
 	}

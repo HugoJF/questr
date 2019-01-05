@@ -19,6 +19,7 @@ class EventSolver
 	public function solve(Event $event)
 	{
 		$successCount = 0;
+
 		foreach (Quest::all() as $quest) {
 			$runner = $quest->getRunner();
 

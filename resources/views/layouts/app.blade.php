@@ -54,41 +54,79 @@
     
     <div class="collapse navbar-collapse mr-5" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            @auth
+        @auth
+            <!-- Balance widget -->
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tooltip" data-placement="bottom" title="Balances values are cached for 5min."><span class="badge badge-dark">Balance: {{ Auth::user()->balance ?? 0}} <i class="fas fa-coins"></i></span></a>
                 </li>
+                
+                <!-- Home -->
                 <li class="nav-item active">
                     <a class="nav-link" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
+                
+                <!-- Quest -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Quests
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('quests.index') }}">List</a>
+                        @admin
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('quests.create') }}">Create</a>
+                        @endadmin
                     </div>
                 </li>
+                
+                <!-- Rankings -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Rankings
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach(\App\Classes\RankingMapper::getRankings() as $ranking)
+                            <a class="dropdown-item" href="{{ $ranking::getUrl() }}">{{ $ranking::getTitle() }}</a>
+                        @endforeach
+                    </div>
+                </li>
+                
+                <!-- Shop -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('shop.index') }}">Shop</a>
                 </li>
+                
+                <!-- Inventory -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('inventory.index') }}">Inventory</a>
                 </li>
+                
+                <!-- Coupon -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Coupons
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" data-toggle="modal" data-target="#use-token" href="#">Use</a>
+                        @admin
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ route('coupon.create') }}">Create</a>
+                        <a class="dropdown-item" href="{{ route('coupon.index') }}">List</a>
+                        @endadmin
                     </div>
+                </li>
+                
+                <!-- Profile -->
+                <li class="nav-item">
+                    <a href="{{ route('profile') }}">
+                        <img style="height: 40px;" class="rounded-circle shadow-sm ml-3" src="{{ Auth::user()->avatar }}">
+                    </a>
                 </li>
             @endauth
             @guest
                 <li class="nav-item">
                     <a class="btn btn-outline-primary" href="{{ route('auth.steam') }}">Sign in</a>
+                
                 </li>
             @endguest
         </ul>
@@ -102,36 +140,24 @@
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-12 col-md">
-                <img class="mb-2" src="{{ asset('/brand/bootstrap-solid.svg') }}" alt="" width="24" height="24">
-                <small class="d-block mb-3 text-muted">&copy; 2017-2018</small>
+            <!-- <img class="mb-2" src="{{ asset('/brand/bootstrap-solid.svg') }}" alt="" width="24" height="24"> -->
+                <small class="d-block mb-3 text-muted">&copy; 2018-2019</small>
             </div>
-            <div class="col-6 col-md">
-                <h5>Features</h5>
+            <div class="col-12 col-md">
+                <h5>Contact</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Cool stuff</a></li>
-                    <li><a class="text-muted" href="#">Random feature</a></li>
-                    <li><a class="text-muted" href="#">Team feature</a></li>
-                    <li><a class="text-muted" href="#">Stuff for developers</a></li>
-                    <li><a class="text-muted" href="#">Another one</a></li>
-                    <li><a class="text-muted" href="#">Last time</a></li>
+                    <li><a class="text-muted" href="http://steamcommunity.com/id/de_nerd">Steam</a></li>
+                    <li><a class="text-muted" href="http://denerdtv.com/discord">Discord</a></li>
+                    <li><a class="text-muted" href="https://twitter.com/de_nerdTV">Twitter</a></li>
+                    <li><a class="text-muted" href="https://www.twitch.tv/de_nerdTV">Twitch</a></li>
                 </ul>
             </div>
-            <div class="col-6 col-md">
-                <h5>Resources</h5>
+            <div class="col-12 col-md">
+                <h5>Information</h5>
                 <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Resource</a></li>
-                    <li><a class="text-muted" href="#">Resource name</a></li>
-                    <li><a class="text-muted" href="#">Another resource</a></li>
-                    <li><a class="text-muted" href="#">Final resource</a></li>
-                </ul>
-            </div>
-            <div class="col-6 col-md">
-                <h5>About</h5>
-                <ul class="list-unstyled text-small">
-                    <li><a class="text-muted" href="#">Team</a></li>
-                    <li><a class="text-muted" href="#">Locations</a></li>
-                    <li><a class="text-muted" href="#">Privacy</a></li>
-                    <li><a class="text-muted" href="#">Terms</a></li>
+                    <li><a class="text-muted" href="https://denerdtv.com/questr/">How-to guide</a></li>
+                    <li><a class="text-muted" href="http://denerdtv.com">Blog</a></li>
+                    <li><a class="text-muted" href="https://github.com/HugoJF/questr">GitHub</a></li>
                 </ul>
             </div>
         </div>

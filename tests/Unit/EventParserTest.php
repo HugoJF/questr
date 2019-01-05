@@ -6,7 +6,6 @@ use App\Classes\Event;
 use App\Classes\EventParser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EventParserTest extends TestCase
@@ -21,7 +20,7 @@ class EventParserTest extends TestCase
 		$eventParser = new EventParser();
 		$event = $eventParser->parse($raw);
 
-		$this->assertEquals(Event::TYPE_DAMAGE, $event->type);
+		$this->assertEquals(Event::TYPE_DAMAGE, $event::getType());
 		$this->assertEquals('11/01/2018', $event->date);
 		$this->assertEquals('17:06:24', $event->time);
 		$this->assertEquals('CLOWN-', $event->attackerName);

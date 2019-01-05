@@ -83,22 +83,6 @@ class ShopController extends Controller
 		// Generate random float
 		$float = $this->conditionNameToFloat($item->condition);
 
-		// Generate item transaction
-		$transaction = Transaction::make();
-
-		$transaction->value = -$cost;
-		$transaction->user()->associate(Auth::user());
-		$transaction->owner()->associate($item);
-
-		$transactionSaved = $transaction->save();
-
-		// Check if transaction was correctly generated
-		if (!$transactionSaved) {
-			flash()->error('Error occurred while generating the transaction for your purchase!')->important();
-
-			return back();
-		}
-
 		// Generate item
 		$inv = Inventory::make();
 
@@ -112,6 +96,22 @@ class ShopController extends Controller
 		$inv->ends_at = Carbon::now()->addDay($duration);
 
 		$inv->save();
+
+		// Generate item transaction
+		$transaction = Transaction::make();
+
+		$transaction->value = -$cost;
+		$transaction->user()->associate(Auth::user());
+		$transaction->owner()->associate($inv);
+
+		$transactionSaved = $transaction->save();
+
+		// Check if transaction was correctly generated
+		if (!$transactionSaved) {
+			flash()->error('Error occurred while generating the transaction for your purchase!')->important();
+
+			return back();
+		}
 
 		// Send user back to previous page
 		flash()->success("<strong>$item->market_hash_name</strong> successfully purchased for $duration days for <strong>$cost <i class=\"fas fa-coins\"></i></strong>");

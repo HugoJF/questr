@@ -9,17 +9,20 @@
 namespace App\Classes;
 
 
-use App\Quest;
-use App\QuestProgress;
 use Illuminate\Support\Facades\Log;
 
 class QuestKillCount extends BaseQuest
 {
 	public $quest;
 
+	/**
+	 * @param PlayerDamageEvent|Event $event
+	 *
+	 * @return bool
+	 */
 	public function accepts(Event $event)
 	{
-		return $event->type === Event::TYPE_DAMAGE &&
+		return $event::getType() === Event::TYPE_DAMAGE &&
 			$event->targetHealth == 0;
 	}
 
@@ -43,7 +46,6 @@ class QuestKillCount extends BaseQuest
 		if ($filter && $filter->value != $this->event->weapon) {
 			return false;
 		}
-
 
 		$questProgress->progress++;
 		$persisted = $questProgress->save();

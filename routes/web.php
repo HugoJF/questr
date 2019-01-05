@@ -11,7 +11,20 @@
 |
 */
 
+/**
+ * Quests       - time based
+ * Statistics   - all time
+ * Achievements - statistics transaction generator
+ * Badges       - profile achievements
+ *
+ * Notificator  - inter-feature communication
+ *
+ */
+
+
 Route::get('/', function () {
+	$users = \App\User::all();
+
 	return view('home', [
 		'randomQuests' => \App\Quest::visible()->orderBy('created_at', 'DESC')->limit(3)->get(),
 	]);
@@ -49,12 +62,20 @@ Route::prefix('inventory')->name('inventory.')->group(function () {
 });
 
 Route::prefix('coupon')->name('coupon.')->group(function () {
+	Route::get('', 'CouponController@index')->name('index')->middleware('can:index,App\Coupon');
+	Route::get('{coupon}/edit', 'CouponController@edit')->name('edit')->middleware('can:edit,App\Coupon');
 	Route::get('create', 'CouponController@create')->name('create')->middleware('can:create,App\Coupon');
+
+	Route::patch('{coupon}', 'CouponController@update')->name('update')->middleware('can:edit,coupon');
 
 	Route::post('/', 'CouponController@store')->name('store')->middleware('can:create,App\Coupon');
 	Route::post('use', 'CouponController@use')->name('use')->middleware('can:use,App\Coupon');
+
+	Route::delete('{coupon}', 'CouponController@delete')->name('delete')->middleware('can:delete,coupon');
 });
 
-Route::get('is-admin', function () {
-	return Auth::user()->isAdmin() ? 'true' : 'false';
+Route::prefix('ranking')->name('ranking.')->group(function () {
+	Route::get('{stub?}', 'RankingController@process')->name('process');
 });
+
+Route::get('profile/{user?}', 'UserController@profile')->name('profile');

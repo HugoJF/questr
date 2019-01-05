@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Hugo
- * Date: 11/1/2018
- * Time: 8:05 AM
- */
 
 namespace App\Classes;
-
 
 use App\Quest;
 

@@ -84,7 +84,8 @@ class AuthController extends Controller
 
 		return User::create([
 			'username' => $info->personaname,
-			'steam_id'  => $steamId,
+			'avatar'   => $info->avatarfull,
+			'steam_id' => $steamId,
 		]);
 	}
 

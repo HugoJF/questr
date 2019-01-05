@@ -35,23 +35,7 @@
             <li><strong>Cost:</strong> {{ $quest->cost ?? 0}} <i class="fas fa-coins"></i></li>
             <li><strong>Starts:</strong> {{ $quest->startAt }}</li>
             <li><strong>Ends:</strong> {{ $quest->endAt }}</li>
-            <li class="my-3">
-                @if($quest->locked)
-                    <h3><span class="badge badge-dark">Unlock in: {{ $quest->startAt->diffForHumans(null, true) }}</span></h3>
-                @elseif($quest->finished)
-                    <h3><span class="badge badge-success">Rewarded</span></h3>
-                @elseif($quest->success && $quest->available)
-                    <h3><span class="badge badge-success">Completed</span></h3>
-                @elseif($quest->available && $quest->inProgress)
-                    <h3><span class="badge badge-primary">In progress</span></h3>
-                @elseif($quest->available)
-                    <h3><span class="badge badge-primary">Available</span></h3>
-                @elseif($quest->failed)
-                    <h3><span class="badge badge-danger">Failed</span></h3>
-                @elseif($quest->expired)
-                    <h3><span class="badge badge-dark">Expired</span></h3>
-                @endif
-            </li>
+            <li class="my-3"><h3>@include('quests.badge')</h3></li>
             <li><h3>{{ $quest->reward }} <i class="fas fa-coins"></i></h3></li>
         </ul>
         <!--
@@ -79,6 +63,7 @@
             <a href="#" class="btn btn-lg btn-block btn-outline-dark text-black-50 disabled">Expired</a>
         @endif
     </div>
+    @admin
     @if($detailed ?? false)
         <div class="card-footer">
             <h4>Filters:</h4>
@@ -113,4 +98,5 @@
             </h5>
         </div>
     @endif
+    @endadmin
 </div>

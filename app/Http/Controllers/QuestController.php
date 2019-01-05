@@ -18,7 +18,7 @@ class QuestController extends Controller
 {
 	public function index()
 	{
-		$quests = Quest::visible()->orderBy('created_at', 'DESC')->paginate(12);
+		$quests = Quest::visible()->latest()->paginate(12);
 
 		return view('quests.index', [
 			'quests' => $quests,
@@ -118,6 +118,7 @@ class QuestController extends Controller
 		}
 
 		// Generate quest transaction for reward
+		/** @var Transaction $transaction */
 		$transaction = Transaction::make();
 
 		$transaction->value = $quest->reward;
