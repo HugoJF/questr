@@ -9,6 +9,8 @@
 namespace App\Classes;
 
 
+use App\Events\PlayerDamageEvent;
+
 class EventParser
 {
 	static $events = [

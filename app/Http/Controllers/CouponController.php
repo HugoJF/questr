@@ -147,7 +147,7 @@ class CouponController extends Controller
 
 		$transaction->value = $coupon->reward;
 		$transaction->user()->associate(Auth::user());
-		$transaction->owner()->assciate($coupon);
+		$transaction->owner()->associate($coupon);
 
 		$transaction->save();
 

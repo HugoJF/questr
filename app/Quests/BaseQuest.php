@@ -43,7 +43,7 @@ abstract class BaseQuest
 		$this->quest = $quest;
 	}
 
-	public function setEvent(PlayerDamageEvent $event)
+	public function setEvent(Event $event)
 	{
 		$this->event = $event;
 	}

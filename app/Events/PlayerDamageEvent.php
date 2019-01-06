@@ -6,8 +6,9 @@
  * Time: 7:47 AM
  */
 
-namespace App\Classes;
+namespace App\Events;
 
+use App\Classes\Event;
 use App\User;
 
 class PlayerDamageEvent extends Event

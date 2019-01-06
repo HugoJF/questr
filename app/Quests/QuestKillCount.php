@@ -72,9 +72,35 @@ class QuestKillCount extends BaseQuest
 	public static function getQuestFilters()
 	{
 		return [
-			'weapon' => [
-				'awp', 'ak47',
-			]
+			'weapon'    => [
+				'awp',
+				'ak47',
+				'knife',
+				'deagle',
+				'p250',
+				'hkp2000',
+				'knife',
+				'famas',
+				'aug',
+				'galilar',
+				'm4a1',
+				'fiveseven',
+				'glock',
+				'sg556',
+				'elite',
+				'ssg08',
+				'tec9',
+			],
+			'hit_group' => [
+				'generic',
+				'head',
+				'chest',
+				'stomach',
+				'right arm',
+				'left arm',
+				'right leg',
+				'left leg',
+			],
 		];
 	}
 }

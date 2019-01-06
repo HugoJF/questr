@@ -3,7 +3,7 @@
 @section('content')
     <div class="pricing-header px-3 py-3 pt-md-2 pb-md-2 mx-auto text-center">
         <h1 class="display-4 mb-4">Profile</h1>
-        <h3>{{ $user->name ?? $user->username }}</h3>
+        <h3 class="font-weight-normal mb-1">{{ $user->name ?? $user->username }}</h3>
     </div>
     
     <div class="card-deck mb-3 justify-content-center">

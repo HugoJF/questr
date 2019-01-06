@@ -12,21 +12,30 @@
     if($quest->failed) {
         $status = 'danger';
     }
+    
+    $detailed = $detailed ?? false;
+    
+    $progress = min(($quest->progress ?? 0) / $quest->goal * 100, 100);
+
+
 @endphp
 
 <div class="card {{ isset($status) ? "border-$status" : '' }} mb-4 shadow-sm">
-    <div class="card-header {{ isset($status) ? "bg-$status-faded border-$status" : '' }}">
+    <div class="{{ $detailed ? '' : 'border-bottom-0' }} card-header {{ isset($status) ? "bg-$status-faded border-$status" : '' }}">
         <h4 class="my-0 font-weight-normal w-100">
             <a class="{{ isset($status) ? "text-$status" : 'text-dark' }}" href="{{ route('quests.show', $quest) }}">{{ $quest->title }}</a>
         </h4>
         <br/>
     </div>
-    @if($detailed ?? false)
-        <div class="card-header {{ isset($status) ? "bg-$status-faded border-$status" : '' }}">
+    @if($detailed)
+        <div class="border-bottom-0 card-header {{ isset($status) ? "bg-$status-faded border-$status" : '' }}">
             <p class="w-100 my-0">{{ $quest->description }}</p>
         </div>
     @endif
     <div class="card-body">
+        <div class="progress" style="height: 0.5rem;">
+            <div class="progress-bar {{ isset($status) ? "bg-$status" : 'bg-dark' }}" role="progressbar" style="width: {{ $progress }}%;" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
         <h1 class="card-title pricing-card-title">{{ $quest->progress ?? 0 }}
             <small class="text-muted">/ {{ $quest->goal }}</small>
         </h1>

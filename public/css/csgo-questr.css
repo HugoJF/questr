@@ -8,6 +8,15 @@ html {
     }
 }
 
+.progress {
+    margin: -1.25rem -1.25rem 0.5rem;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+
+}
+
+
 .color-eb4b4b {
     border-color: #b81818;
 }

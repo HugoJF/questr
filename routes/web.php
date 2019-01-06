@@ -78,4 +78,5 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 	Route::get('{stub?}', 'RankingController@process')->name('process');
 });
 
-Route::get('profile/{user?}', 'UserController@profile')->name('profile');
+Route::get('profile', 'UserController@profile')->name('profile');
+Route::get('profile/{user?}', 'UserController@profile')->name('profile')->middleware('can:view,user');

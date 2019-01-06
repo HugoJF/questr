@@ -13,12 +13,13 @@ class AuthServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	protected $policies = [
+		'App\QuestFilter' => 'App\Policies\QuestFilterPolicy',
+		'App\Inventory'   => 'App\Policies\InventoryPolicy',
+		'App\ShopItem'    => 'App\Policies\ShopItemPolicy',
+		'App\Coupon'      => 'App\Policies\CouponPolicy',
 		'App\Model'       => 'App\Policies\ModelPolicy',
 		'App\Quest'       => 'App\Policies\QuestPolicy',
-		'App\QuestFilter' => 'App\Policies\QuestFilterPolicy',
-		'App\ShopItem'    => 'App\Policies\ShopItemPolicy',
-		'App\Inventory'   => 'App\Policies\InventoryPolicy',
-		'App\Coupon'      => 'App\Policies\CouponPolicy',
+		'App\User'        => 'App\Policies\UserPolicy',
 	];
 
 	/**

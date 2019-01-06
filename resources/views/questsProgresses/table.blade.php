@@ -16,8 +16,12 @@
             
             <!-- Cost -->
             <td>{{ $progress->quest->cost }} <i class="fas fa-coins"></i></td>
+            
             <!-- Progress -->
-            <td>{{ $progress->progress }} <small class="text-muted">/ {{ $progress->quest->goal }}</small></td>
+            <td>{{ $progress->progress }}
+                <small class="text-muted">/ {{ $progress->quest->goal }}</small>
+                
+            </td>
             
             <!-- Reward -->
             <td>{{ $progress->quest->reward }} <i class="fas fa-coins"></i></td>
@@ -27,7 +31,7 @@
         </tr>
     @empty
         <tr class="text-center">
-            <td colspan="2">No progresses found!</td>
+            <td colspan="5">No progresses found!</td>
         </tr>
     @endforelse
     </tbody>

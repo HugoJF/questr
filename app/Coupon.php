@@ -10,6 +10,6 @@ class Coupon extends Pivot
 
 	public function userUses()
 	{
-		return $this->hasMany(CouponUser::class);
+		return $this->hasMany(CouponUser::class, 'coupon_id');
 	}
 }

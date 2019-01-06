@@ -41,7 +41,7 @@
         </tr>
     @empty
         <tr class="text-center">
-            <td colspan="2">No progresses found!</td>
+            <td colspan="4">No progresses found!</td>
         </tr>
     @endforelse
     </tbody>

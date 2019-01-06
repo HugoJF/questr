@@ -107,7 +107,7 @@ class Quest extends Model
 	{
 		$questProgress = $this->getQuestProgressForAuthedUser();
 		if ($questProgress) {
-			return $this->expired && $questProgress->progress < $this->goal;
+			return $this->expired && $questProgress->progress != 0;
 		} else {
 			return null;
 		}
