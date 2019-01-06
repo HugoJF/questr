@@ -68,4 +68,4 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 });
 
 Route::get('profile', 'UserController@profile')->name('profile');
-Route::get('profile/{user}', 'UserController@profile')->name('profile')->middleware('can:view,user');
+Route::get('profile/{user?}', 'UserController@profile')->name('profile')->middleware('can:view,user');
