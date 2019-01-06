@@ -15,8 +15,10 @@ class CouponController extends Controller
 
 	public function index()
 	{
+		// Retrieve coupons
 		$coupons = Coupon::all();
 
+		// Build view
 		return view('coupon.index', [
 			'coupons' => $coupons,
 		]);
@@ -24,11 +26,13 @@ class CouponController extends Controller
 
 	public function create(FormBuilder $formBuilder)
 	{
+		// Build creation form
 		$form = $formBuilder->create(CouponForm::class, [
 			'method' => 'POST',
-			'url'    => route('coupon.store'),
+			'route'  => 'coupon.store',
 		]);
 
+		// Build form view
 		return view('form', [
 			'title'       => 'New coupon code form',
 			'submit_text' => 'Create new coupon',
@@ -38,12 +42,14 @@ class CouponController extends Controller
 
 	public function edit(FormBuilder $formBuilder, Coupon $coupon)
 	{
+		// Build edition form
 		$form = $formBuilder->create(CouponForm::class, [
 			'method' => 'PATCH',
 			'route'  => ['coupon.update', $coupon],
 			'model'  => $coupon,
 		]);
 
+		// Build edition view
 		return view('form', [
 			'title'       => "Updating coupon $coupon->code",
 			'submit_text' => 'Update coupon',
@@ -53,6 +59,7 @@ class CouponController extends Controller
 
 	public function store(Request $request)
 	{
+		// Validate coupon data
 		$request->validate([
 			'code'    => 'required',
 			'reward'  => 'required|numeric|gt:0',
@@ -60,29 +67,40 @@ class CouponController extends Controller
 			'endAt'   => 'required|date_format:Y-m-d H:i:s',
 		]);
 
+		// Build coupon model
 		$coupon = Coupon::make();
 
 		$coupon->fill($request->all());
 
-		$coupon->save();
+		$saved = $coupon->save();
 
-		flash()->success("Coupon <strong>{$coupon->code}</strong> created!");
+		// Notify user of result
+		if ($saved) {
+			flash()->success("Coupon <strong>{$coupon->code}</strong> created!");
+		} else {
+			flash()->error("Coupon <strong>{$coupon->code}</strong> could not be saved!");
+		}
 
-		return redirect()->route('home');
+		// Redirect to coupon index
+		return redirect()->route('coupon.index');
 	}
+
 
 	public function update(Request $request, Coupon $coupon)
 	{
+		// Update coupon model
 		$coupon->fill($request->all());
 
 		$saved = $coupon->save();
 
+		// Notify user of result
 		if ($saved) {
 			flash()->success("Coupon <strong>$coupon->code</strong> was updated successfully!");
 		} else {
 			flash()->error("Coupon <strong>$coupon->code</strong> could not be updated successfully!");
 		}
 
+		// Return to coupon index
 		return redirect()->route('coupon.index');
 	}
 
@@ -161,6 +179,7 @@ class CouponController extends Controller
 	{
 		$deleted = $coupon->delete();
 
+		// Notify user if coupon was deleted
 		if ($deleted) {
 			flash()->success("Coupon <strong>$coupon->code</strong> was deleted successfully!");
 		} else {

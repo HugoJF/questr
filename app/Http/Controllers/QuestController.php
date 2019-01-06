@@ -34,30 +34,35 @@ class QuestController extends Controller
 
 	public function start(Quest $quest)
 	{
+		// Check if quest is unlocked
 		if ($quest->startAt->isFuture()) {
 			flash()->error('You cannot start locked quests!')->important();
 
 			return back();
 		}
 
+		// Check if quest is valid
 		if ($quest->endAt->isPast()) {
 			flash()->error('You cannot start expired quests!')->important();
 
 			return back();
 		}
 
+		// Check if it's not started by authed user
 		if (Auth::user()->questProgresses()->where('quest_id', $quest->id)->exists()) {
 			flash()->warning('Quest is already in progress!')->important();
 
 			return back();
 		}
 
+		// Check if user can afford the quest cost
 		if ($quest->cost > 0 && Auth::user()->getBalanceAttribute(true) < $quest->cost) {
 			flash()->error('Balance is insufficient to start quest')->important();
 
 			return back();
 		}
 
+		// Generate debit transaction
 		if ($quest->cost > 0) {
 			$transaction = Transaction::make();
 
@@ -68,6 +73,7 @@ class QuestController extends Controller
 			$transaction->save();
 		}
 
+		// Generate quest progress
 		$questProgress = QuestProgress::make();
 
 		$questProgress->progress = 0;
@@ -76,6 +82,7 @@ class QuestController extends Controller
 
 		$questProgress->save();
 
+		// Notify user of result
 		flash()->success("Quest <strong>{$quest->title}</strong> has started!");
 
 		return back();
@@ -100,6 +107,7 @@ class QuestController extends Controller
 			return back();
 		}
 
+		// Check if user owns progress
 		if ($questProgress->user != Auth::user()) {
 			flash()->error('You cannot finish quests that are not yours!')->important();
 
