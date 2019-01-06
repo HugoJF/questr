@@ -16,7 +16,7 @@ class QuestFilterController extends Controller
 	{
 		$form = $formBuilder->create(QuestFilterForm::class, [
 			'method' => 'POST',
-			'url'    => route('quests.filters.store', $quest),
+			'route'  => ['quests.filters.store', $quest],
 		], [
 			'quest' => $quest,
 		]);
@@ -58,8 +58,10 @@ class QuestFilterController extends Controller
 
 		// Persist filter
 		$filter = QuestFilter::make();
+
 		$filter->fill($validated);
 		$filter->quest()->associate($quest);
+		
 		$filter->save();
 
 		// Feedback

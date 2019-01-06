@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 /**
  * Quests       - time based
  * Statistics   - all time
@@ -61,7 +50,7 @@ Route::prefix('inventory')->name('inventory.')->group(function () {
 	Route::get('equip/{inventory}', 'InventoryController@equip')->name('equip')->middleware('can:equip,inventory');
 });
 
-Route::prefix('coupon')->name('coupon.')->group(function () {
+Route::prefix('coupons')->name('coupon.')->group(function () {
 	Route::get('', 'CouponController@index')->name('index')->middleware('can:index,App\Coupon');
 	Route::get('{coupon}/edit', 'CouponController@edit')->name('edit')->middleware('can:edit,App\Coupon');
 	Route::get('create', 'CouponController@create')->name('create')->middleware('can:create,App\Coupon');
