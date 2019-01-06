@@ -8,4 +8,15 @@
     <div class="card-deck mb-3 text-center">
         @include('quests.card', ['quest' => $quest, 'detailed' => true])
     </div>
+
+    @admin
+        <div class="pricing-header px-3 py-3 pt-md-2 pb-md-2 mx-auto text-center">
+            <h1 class="display-4">Quest progresses</h1>
+        </div>
+    
+        @include('questsProgresses.table', [
+            'questsProgresses' => $quest->questProgresses,
+        ])
+    @endadmin
+    
 @endsection

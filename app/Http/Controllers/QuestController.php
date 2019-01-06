@@ -84,14 +84,14 @@ class QuestController extends Controller
 	public function finish(Quest $quest)
 	{
 		// Verify if user has succeeded quest
-		if ($quest->success !== true) {
+		if ($quest->success(null) !== true) {
 			flash()->error('You must complete the goal of the quest before finishing it!')->important();
 
 			return back();
 		}
 
 		// Get current quest progress
-		$questProgress = $quest->getQuestProgressForAuthedUser();
+		$questProgress = $quest->getQuestProgress(Auth::user());
 
 		// Check if user already finished quest
 		if ($questProgress->finished_at !== null) {

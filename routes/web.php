@@ -32,7 +32,7 @@ Route::get('/', function () {
 
 Route::get('auth/steam', 'AuthController@redirectToSteam')->name('auth.steam');
 Route::get('auth/steam/handle', 'AuthController@handle')->name('auth.steam.handle');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::prefix('quests')->name('quests.')->group(function () {
 	Route::get('/', 'QuestController@index')->name('index')->middleware('can:view,App\Quest');

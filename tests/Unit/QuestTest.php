@@ -27,7 +27,7 @@ class QuestTest extends TestCase
 		$this->assertTrue($quest->available);
 		$this->assertFalse($quest->locked);
 		$this->assertFalse($quest->expired);
-		$this->assertFalse($quest->inProgress);
+		$this->assertFalse($quest->inProgress(null));
 	}
 
 	public function test_locked_attribute_works()
@@ -40,7 +40,7 @@ class QuestTest extends TestCase
 		$this->assertFalse($quest->available);
 		$this->assertTrue($quest->locked);
 		$this->assertFalse($quest->expired);
-		$this->assertFalse($quest->inProgress);
+		$this->assertFalse($quest->inProgress(null));
 	}
 
 	public function test_expired_attribute_works()
@@ -53,7 +53,7 @@ class QuestTest extends TestCase
 		$this->assertFalse($quest->available);
 		$this->assertFalse($quest->locked);
 		$this->assertTrue($quest->expired);
-		$this->assertFalse($quest->inProgress);
+		$this->assertFalse($quest->inProgress(null));
 	}
 
 	public function test_in_progress_attribute_works()
@@ -75,7 +75,7 @@ class QuestTest extends TestCase
 		$this->assertTrue($quest->available);
 		$this->assertFalse($quest->locked);
 		$this->assertFalse($quest->expired);
-		$this->assertTrue($quest->inProgress);
+		$this->assertTrue($quest->inProgress($user));
 	}
 
 	public function test_success_attribute_works()
@@ -96,7 +96,7 @@ class QuestTest extends TestCase
 
 		Auth::login($user);
 
-		$this->assertTrue($quest->success);
+		$this->assertTrue($quest->success($user));
 	}
 
 	public function test_success_attribute_works_with_attributes_pre_loaded()
@@ -119,7 +119,7 @@ class QuestTest extends TestCase
 
 		Auth::login($user);
 
-		$this->assertTrue($quest->success);
+		$this->assertTrue($quest->success($user));
 	}
 
 	public function test_success_attribute_works_when_user_has_not_finished_quest()
@@ -140,6 +140,6 @@ class QuestTest extends TestCase
 
 		Auth::login($user);
 
-		$this->assertFalse($quest->success);
+		$this->assertFalse($quest->success($user));
 	}
 }

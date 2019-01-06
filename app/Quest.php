@@ -70,9 +70,15 @@ class Quest extends Model
 		return $this->startAt->isPast() && $this->endAt->isPast();
 	}
 
-	public function getInProgressAttribute()
+	public function inProgress($user)
 	{
-		$user = Auth::user();
+		if (!$user) {
+			if (Auth::check()) {
+				$user = Auth::user();
+			} else {
+				return false;
+			}
+		}
 
 		if ($user) {
 			return $user->questProgresses()->where('quest_id', $this->id)->exists();
@@ -81,9 +87,9 @@ class Quest extends Model
 		}
 	}
 
-	public function getSuccessAttribute()
+	public function success($user)
 	{
-		$questProgress = $this->getQuestProgressForAuthedUser();
+		$questProgress = $this->getQuestProgress($user);
 
 		if ($questProgress) {
 			return $questProgress->progress >= $this->goal;
@@ -92,9 +98,10 @@ class Quest extends Model
 		}
 	}
 
-	public function getFinishedAttribute()
+	public function finished($user)
 	{
-		$questProgress = $this->getQuestProgressForAuthedUser();
+		$questProgress = $this->getQuestProgress($user);
+
 
 		if ($questProgress) {
 			return $questProgress->finished_at !== null;
@@ -103,9 +110,10 @@ class Quest extends Model
 		}
 	}
 
-	public function getFailedAttribute()
+	public function failed($user)
 	{
-		$questProgress = $this->getQuestProgressForAuthedUser();
+		$questProgress = $this->getQuestProgress($user);
+
 		if ($questProgress) {
 			return $this->expired && $questProgress->progress != 0;
 		} else {
@@ -113,9 +121,9 @@ class Quest extends Model
 		}
 	}
 
-	public function getProgressAttribute()
+	public function progress($user)
 	{
-		$questProgress = $this->getQuestProgressForAuthedUser();
+		$questProgress = $this->getQuestProgress($user);
 
 		if ($questProgress) {
 			return $questProgress->progress;
@@ -124,21 +132,23 @@ class Quest extends Model
 		}
 	}
 
-	public function getQuestProgressForAuthedUser()
+	public function getQuestProgress($user)
 	{
-		$user = Auth::user();
-
-		if ($user) {
-			if ($this->relationLoaded('questProgresses') && $this->questProgresses->contains('user_id', $user->id)) {
-				$questProgress = $this->questProgresses->where('user_id', $user->id)->first();
-			} else {
-				$questProgress = $this->questProgresses()->where('user_id', $user->id)->first();
-			}
-			if ($questProgress) {
-				return $questProgress;
+		if (!$user) {
+			if (Auth::check()) {
+				$user = Auth::user();
 			} else {
 				return null;
 			}
+		}
+
+		if ($this->relationLoaded('questProgresses') && $this->questProgresses->contains('user_id', $user->id)) {
+			$questProgress = $this->questProgresses->where('user_id', $user->id)->first();
+		} else {
+			$questProgress = $this->questProgresses()->where('user_id', $user->id)->first();
+		}
+		if ($questProgress) {
+			return $questProgress;
 		} else {
 			return null;
 		}

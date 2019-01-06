@@ -17,8 +17,13 @@
     </div>
     
     <h3 class="pb-2">Quests progresses</h3>
-    @include('questsProgresses.table', ['questsProgresses' => $user->questProgresses()->latest()->with('quest')->get()])
+    @include('questsProgresses.table', [
+        'user'              => $user,
+        'questsProgresses'  => $user->questProgresses()->latest()->with('quest')->get(),
+    ])
     
     <h3 class="pt-5 pb-2">Transactions</h3>
-    @include('transactions.table', ['transactions' => $user->transactions()->latest()->get()])
+    @include('transactions.table', [
+        'transactions' => $user->transactions()->latest()->get()
+    ])
 @endsection

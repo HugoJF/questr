@@ -1,23 +1,25 @@
 @php
+    $user = $user ?? null;
+    
     $status = null;
     
-    if($quest->available || ($quest->inProgress && $quest->available)) {
+    if($quest->available || ($quest->inProgress($user) && $quest->available)) {
         $status = 'primary';
     }
     
-     if($quest->success && $quest->available) {
+     if($quest->success($user) && $quest->available) {
         $status = 'success';
     }
     
-    if($quest->failed) {
+    if($quest->failed($user)) {
         $status = 'danger';
     }
     
     $detailed = $detailed ?? false;
     
-    $progress = min(($quest->progress ?? 0) / $quest->goal * 100, 100);
+    $progress = min(($quest->progress($user) ?? 0) / $quest->goal * 100, 100);
 
-
+    
 @endphp
 
 <div class="card {{ isset($status) ? "border-$status" : '' }} mb-4 shadow-sm">
@@ -36,7 +38,7 @@
         <div class="progress" style="height: 0.5rem;">
             <div class="progress-bar {{ isset($status) ? "bg-$status" : 'bg-dark' }}" role="progressbar" style="width: {{ $progress }}%;" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <h1 class="card-title pricing-card-title">{{ $quest->progress ?? 0 }}
+        <h1 class="card-title pricing-card-title">{{ $quest->progress($user) ?? 0 }}
             <small class="text-muted">/ {{ $quest->goal }}</small>
         </h1>
         <ul class="list-unstyled mt-3 mb-4">
@@ -58,15 +60,15 @@
          -->
         @if($quest->locked)
             <a href="#" class="btn btn-lg btn-block btn-outline-dark text-black-50 disabled">Locked</a>
-        @elseif($quest->finished)
+        @elseif($quest->finished($user))
             <a href="#" class="btn btn-lg btn-block btn-success shadow-sm disabled">Finished</a>
-        @elseif($quest->success && $quest->available)
+        @elseif($quest->success($user) && $quest->available)
             <a id="finish" href="{{ route('quests.finish', $quest) }}" class="btn btn-lg btn-block btn-success shadow-sm">Finish</a>
-        @elseif($quest->inProgress && $quest->available)
+        @elseif($quest->inProgress($user) && $quest->available)
             <a id="details" href="{{ route('quests.show', $quest) }}" class="btn btn-lg btn-block btn-primary shadow-sm">View details</a>
         @elseif($quest->available)
             <a id="start" href="{{ route('quests.start', $quest) }}" class="btn btn-lg btn-block btn-outline-primary shadow-sm">Start</a>
-        @elseif($quest->failed)
+        @elseif($quest->failed($user))
             <a href="#" class="btn btn-lg btn-block btn-danger disabled">Failed</a>
         @elseif($quest->expired)
             <a href="#" class="btn btn-lg btn-block btn-outline-dark text-black-50 disabled">Expired</a>

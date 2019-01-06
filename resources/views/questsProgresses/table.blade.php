@@ -27,7 +27,7 @@
             <td>{{ $progress->quest->reward }} <i class="fas fa-coins"></i></td>
             
             <!-- Status -->
-            <td>@include('quests.badge', ['quest' => $progress->quest])</td>
+            <td>@include('quests.badge', ['user' => $progress->user, 'quest' => $progress->quest])</td>
         </tr>
     @empty
         <tr class="text-center">
