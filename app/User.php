@@ -45,11 +45,6 @@ class User extends Authenticatable
 		return $this->hasMany(Transaction::class);
 	}
 
-	public function fakeTransactions()
-	{
-		return $this->morphMany(Transaction::class, 'owner');
-	}
-
 	public function couponUses()
 	{
 		return $this->hasMany(CouponUser::class);

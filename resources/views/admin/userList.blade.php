@@ -9,9 +9,11 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>Quest progresses</th>
+            <th>Quests</th>
             <th>Balance</th>
-            <th>Item count</th>
+            <th>Items</th>
+            <th>Transactions</th>
+            <th>Coupons</th>
             <th>Register date</th>
         </tr>
         </thead>
@@ -34,6 +36,12 @@
                 
                 <!-- Item count -->
                 <td>{{ $user->inventories()->count() }}</td>
+                
+                <!-- Transactions -->
+                <td>{{ $user->transactions()->count() }}</td>
+                
+                <!-- Coupon uses -->
+                <td>{{ $user->couponUses()->count() }}</td>
                 
                 <!-- Register date -->
                 <td>{{ $user->created_at }}
