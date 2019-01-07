@@ -219,7 +219,7 @@ Server.prototype = {
     bindReceiver: function () {
         let that = this;
         setInterval(() => {
-            this.execute(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`, (res) => {
+            that.execute(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`, (res) => {
                 that.log('Bound to receiver!');
             })
         }, 1000 * 60);
@@ -229,7 +229,7 @@ Server.prototype = {
         let that = this;
         setInterval(() => {
             that.execute('mp_logdetail 3', (res) => {
-                sv.log(`Forcing 'mp_logdetail 3':  ${res}`);
+                that.log(`Forcing 'mp_logdetail 3':  ${res}`);
             });
         }, 1000 * 60);
     },
