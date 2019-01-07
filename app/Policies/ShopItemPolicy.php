@@ -25,7 +25,7 @@ class ShopItemPolicy
 	 *
 	 * @return mixed
 	 */
-	public function view(User $user, ShopItem $shopItem)
+	public function view(User $user, ShopItem $shopItem = null)
 	{
 		return true;
 	}
