@@ -74,13 +74,13 @@ class AuthController extends Controller
 	 */
 	protected function findOrNewUser($info)
 	{
-		$user = User::where('steam_id', $info->steamID64)->first();
+		$steamId = $this->normalizeSteamID($info->steamID64);
+
+		$user = User::where('steam_id', $steamId)->first();
 
 		if (!is_null($user)) {
 			return $user;
 		}
-
-		$steamId = $this->normalizeSteamID($info->steamID64);
 
 		return User::create([
 			'username' => $info->personaname,

@@ -27,7 +27,7 @@ class CouponPolicy
 		return false;
 	}
 
-	public function use(User $user, Coupon $coupon)
+	public function use(User $user, Coupon $coupon = null)
 	{
 		return true;
 	}
