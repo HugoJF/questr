@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
-    use HandlesAuthorization;
+	use HandlesAuthorization;
 
 	public function before(User $user, $ability)
 	{
@@ -27,6 +27,11 @@ class UserPolicy
 	public function view(User $user, User $otherUser)
 	{
 		return $user->id === $otherUser->id;
+	}
+
+	public function list(User $user)
+	{
+		return false;
 	}
 
 }

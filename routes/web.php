@@ -67,5 +67,9 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 	Route::get('{stub?}', 'RankingController@process')->name('process');
 });
 
+Route::prefix('admin')->name('admin.')->group(function () {
+	Route::get('users', 'AdminController@userList')->name('users.index')->middleware('can:list,App\User');
+});
+
 Route::get('profile', 'UserController@profile')->name('profile');
 Route::get('profile/{user?}', 'UserController@profile')->name('profile')->middleware('can:view,user');

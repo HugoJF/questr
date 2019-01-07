@@ -115,7 +115,18 @@
                         @endadmin
                     </div>
                 </li>
-                
+            
+                <!-- Administrative -->
+                @admin
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Administrative
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('admin.users.index') }}">User list</a>
+                        </div>
+                    </li>
+                @endadmin
                 <!-- Profile -->
                 <li class="nav-item">
                     <a href="{{ route('profile') }}">
