@@ -34,10 +34,6 @@ class QuestKillCount extends BaseQuest
 
 		// User should manually create this
 		if (!$questProgress) {
-			$name = $user ? $user->id : 'Unknown user';
-
-			Log::info("User {$name} does not have a quest progress, skipping!");
-
 			return false;
 		}
 
