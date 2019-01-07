@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="jumbotron">
-        <h1 class="display-4">Welcome {{ Auth::check() ? ', ' . (Auth::user()->name ?? Auth::user()->username) : 'to Questr' }}!</h1>
+        <h1 class="display-4">Welcome{{ Auth::check() ? ', ' . (Auth::user()->name ?? Auth::user()->username) : ' to Questr' }}!</h1>
         <p class="lead">
             This is our brand new quest system that will allow non-VIP players to change skins, knives and gloves by completing quests and challenges in our CS:GO servers!
             <br>
