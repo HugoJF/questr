@@ -155,6 +155,8 @@ Server.prototype = {
         }).on('end', function (err) {
             that.log(`RCON connection ended!`);
 
+            that.startRconConnection();
+
             for (let i = that.onConnectionEnd.length - 1; i >= 0; i--) {
                 let cb = that.onConnectionEnd[i];
                 if (cb(err) === true)
@@ -215,11 +217,22 @@ Server.prototype = {
     },
 
     bindReceiver: function () {
-        this.execute(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`, (res) => {
-            this.log('Bound to receiver!');
-        })
+        let that = this;
+        setInterval(() => {
+            this.execute(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`, (res) => {
+                that.log('Bound to receiver!');
+            })
+        }, 1000 * 60);
     },
 
+    setHighDetails: function () {
+        let that = this;
+        setInterval(() => {
+            that.execute('mp_logdetail 3', (res) => {
+                sv.log(`Forcing 'mp_logdetail 3':  ${res}`);
+            });
+        }, 1000 * 60);
+    },
     execute: function (command, callback) {
         if (this.authed) {
             this.syncExecute(command, callback);
@@ -284,9 +297,7 @@ function readServers() {
         sv.startRconConnection();
         sv.startReceiver();
         sv.bindReceiver();
-        sv.execute('mp_logdetail 3', (res) => {
-            sv.log(`Forcing 'mp_logdetail 3':  ${res}`);
-        });
+        sv.setHighDetails();
     }
 }
 
