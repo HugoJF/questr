@@ -102,7 +102,7 @@ class ShopItemPolicy
 	 *
 	 * @return mixed
 	 */
-	public function buy(User $user, ShopItem $shopItem)
+	public function buy(User $user, ShopItem $shopItem = null)
 	{
 		return true;
 	}

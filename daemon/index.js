@@ -165,6 +165,8 @@ Server.prototype = {
         }).on('error', function (err) {
             that.log(`RCON errored with message: ${err}`);
 
+            that.startRconConnection();
+            
             for (let i = that.onConnectionError.length - 1; i >= 0; i--) {
                 let cb = that.onConnectionError[i];
                 if (cb(err))
