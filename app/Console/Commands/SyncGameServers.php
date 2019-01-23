@@ -110,6 +110,9 @@ class SyncGameServers extends Command
 		// Remove any white spaces
 		$trimmed = trim($weaponName);
 
+		// Remove double white-spaces
+		$trimmed = preg_replace('/\s+/', ' ', $trimmed);
+
 		// Check if item exists in array before using it
 		if (array_key_exists($trimmed, $this->nameToShort)) {
 			return $this->nameToShort[ $trimmed ];
