@@ -94,6 +94,9 @@ function Server(hostname, name, ip, port, rconPassword, receiverPort) {
     this.receiver = undefined;
     this.connection = undefined;
 
+    this.bindReceiverInterval = undefined;
+    this.highDetailsInterval = undefined;
+
     this.onConnectionAuth = [];
     this.onConnectionResponse = [];
     this.onConnectionEnd = [];
@@ -155,6 +158,7 @@ Server.prototype = {
         }).on('end', function (err) {
             that.log(`RCON connection ended!`);
 
+            that.destroyIntervals();
             that.startRconConnection();
 
             for (let i = that.onConnectionEnd.length - 1; i >= 0; i--) {
@@ -165,6 +169,7 @@ Server.prototype = {
         }).on('error', function (err) {
             that.log(`RCON errored with message: ${err}`);
 
+            that.destroyIntervals();
             that.startRconConnection();
             
             for (let i = that.onConnectionError.length - 1; i >= 0; i--) {
@@ -220,7 +225,7 @@ Server.prototype = {
 
     bindReceiver: function () {
         let that = this;
-        setInterval(() => {
+        this.bindReceiverInterval = setInterval(() => {
             that.execute(`logaddress_add ${LISTENING_IP}:${this.receiverPort}`, (res) => {
                 that.log('Bound to receiver!');
             })
@@ -229,7 +234,7 @@ Server.prototype = {
 
     setHighDetails: function () {
         let that = this;
-        setInterval(() => {
+        this.highDetailsInterval = setInterval(() => {
             that.execute('mp_logdetail 3', (res) => {
                 that.log(`Forcing 'mp_logdetail 3':  ${res}`);
             });
@@ -260,6 +265,11 @@ Server.prototype = {
 
     log: function (message) {
         console.log(`${this.toString()} ${message}`);
+    },
+
+    destroyIntervals: function () {
+        clearInterval(this.bindReceiverInterval);
+        clearInterval(this.highDetailsInterval);
     },
 
     toString: function () {
