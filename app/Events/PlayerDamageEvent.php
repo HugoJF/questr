@@ -9,6 +9,7 @@
 namespace App\Events;
 
 use App\Classes\Event;
+use App\Classes\SteamID;
 use App\User;
 
 class PlayerDamageEvent extends Event
@@ -51,7 +52,7 @@ class PlayerDamageEvent extends Event
 
 	public function getAttackerUser()
 	{
-		$user = User::where('steam_id', $this->attackerSteam)->first();
+		$user = User::where('steam_id', $this->normalizeSteamId($this->attackerSteam))->first();
 
 		return $user;
 	}
@@ -80,6 +81,23 @@ class PlayerDamageEvent extends Event
 				$this->$param = $matches[ $key ];
 			}
 		}
+	}
+    
+    protected function normalizeSteamID($steamID64)
+	{
+		try {
+			$s = new SteamID($steamID64);
+			if ($s->GetAccountType() !== SteamID::TypeIndividual) {
+				throw new \InvalidArgumentException('We only support individual SteamIDs.');
+			} else if (!$s->IsValid()) {
+				throw new \InvalidArgumentException('Invalid SteamID.');
+			}
+			$s->SetAccountInstance(SteamID::DesktopInstance);
+			$s->SetAccountUniverse(SteamID::UniversePublic);
+		} catch (\InvalidArgumentException $e) {
+			return null;
+		}
+		return $s->RenderSteam2();
 	}
 
 	public static function build($raw)
