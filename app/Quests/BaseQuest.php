@@ -54,7 +54,7 @@ abstract class BaseQuest
 	public function getUser()
 	{
 		if ($this->event) {
-			return $this->normalizeSteamID($this->event->getAttackerUser());
+			return $this->event->getAttackerUser();
 		} else {
 			return null;
 		}
