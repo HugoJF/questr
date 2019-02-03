@@ -138,7 +138,7 @@ class SteamID
 			// Check for max unsigned 32-bit number
 			if( gmp_cmp( $AccountID, '4294967295' ) > 0 )
 			{
-				throw new InvalidArgumentException( 'Provided SteamID exceeds max unsigned 32-bit integer.' );
+				throw new \InvalidArgumentException( 'Provided SteamID exceeds max unsigned 32-bit integer.' );
 			}
 
 			$Universe = (int)$Matches[ 1 ];
@@ -165,7 +165,7 @@ class SteamID
 			// Check for max unsigned 32-bit number
 			if( gmp_cmp( $AccountID, '4294967295' ) > 0 )
 			{
-				throw new InvalidArgumentException( 'Provided SteamID exceeds max unsigned 32-bit integer.' );
+				throw new \InvalidArgumentException( 'Provided SteamID exceeds max unsigned 32-bit integer.' );
 			}
 
 			$Type = $Matches[ 1 ];
@@ -219,7 +219,7 @@ class SteamID
 		}
 		else
 		{
-			throw new InvalidArgumentException( 'Provided SteamID is invalid.' );
+			throw new \InvalidArgumentException( 'Provided SteamID is invalid.' );
 		}
 	}
 
@@ -332,7 +332,7 @@ class SteamID
 				}
 			default:
 				{
-					throw new InvalidArgumentException( 'This can only be used on Individual SteamID.' );
+					throw new \InvalidArgumentException( 'This can only be used on Individual SteamID.' );
 				}
 		}
 	}
@@ -424,7 +424,7 @@ class SteamID
 
 			if( $Length < 2 || $Length > 32 )
 			{
-				throw new InvalidArgumentException( 'Provided vanity url has bad length.' );
+				throw new \InvalidArgumentException( 'Provided vanity url has bad length.' );
 			}
 
 			// Steam doesn't allow vanity urls to be valid steamids
@@ -449,7 +449,7 @@ class SteamID
 
 			if( $Value === null )
 			{
-				throw new InvalidArgumentException( 'Provided vanity url does not resolve to any SteamID.' );
+				throw new \InvalidArgumentException( 'Provided vanity url does not resolve to any SteamID.' );
 			}
 		}
 		else if( preg_match( '/^https?:\/\/(steamcommunity\.com\/user|s\.team\/p)\/([\w-]+)(?:\/|$)/', $Value, $Matches ) === 1 )
@@ -483,7 +483,7 @@ class SteamID
 		}
 		else
 		{
-			throw new InvalidArgumentException( 'Provided SteamID is not numeric.' );
+			throw new \InvalidArgumentException( 'Provided SteamID is not numeric.' );
 		}
 
 		return $this;
