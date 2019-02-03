@@ -12,6 +12,7 @@ namespace App\Classes;
 use App\Quest;
 use App\QuestProgress;
 use App\Classes\SteamID;
+use App\Classes\InvalidArgumentException;
 
 abstract class BaseQuest
 {
@@ -78,13 +79,13 @@ abstract class BaseQuest
 		try {
 			$s = new SteamID($steamID64);
 			if ($s->GetAccountType() !== SteamID::TypeIndividual) {
-				throw new \InvalidArgumentException('We only support individual SteamIDs.');
+				throw new InvalidArgumentException('We only support individual SteamIDs.');
 			} else if (!$s->IsValid()) {
-				throw new \InvalidArgumentException('Invalid SteamID.');
+				throw new InvalidArgumentException('Invalid SteamID.');
 			}
 			$s->SetAccountInstance(SteamID::DesktopInstance);
 			$s->SetAccountUniverse(SteamID::UniversePublic);
-		} catch (\InvalidArgumentException $e) {
+		} catch (InvalidArgumentException $e) {
 			return null;
 		}
 		return $s->RenderSteam2();
