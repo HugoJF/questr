@@ -55,10 +55,6 @@ class PlayerDamageEvent extends Event
 	{
         $steamId = $this->normalizeSteamId($this->attackerSteam);
 		$user = User::where('steam_id', $steamId)->first();
-
-        if (!$user) {
-            Log::info("Could not find user for ID: $steamId");
-        }
         
 		return $user;
 	}
