@@ -34,12 +34,14 @@ class QuestKillCount extends BaseQuest
 
 		// User should manually create this
 		if (!$questProgress) {
+            Log::info('User $user->username is missing the quest progress');
 			return false;
 		}
 
 		$filter = $this->quest->questFilters()->where('key', 'weapon')->first();
 
 		if ($filter && $filter->value != $this->event->weapon) {
+            Log::info('Event does not match filter');
 			return false;
 		}
 
