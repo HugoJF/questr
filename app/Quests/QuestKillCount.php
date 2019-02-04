@@ -34,7 +34,6 @@ class QuestKillCount extends BaseQuest
 
 		// User should manually create this
 		if (!$questProgress) {
-            Log::info("User $user->username is missing the quest progress");
 			return false;
 		}
 
