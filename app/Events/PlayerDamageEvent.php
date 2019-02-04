@@ -11,6 +11,7 @@ namespace App\Events;
 use App\Classes\Event;
 use App\Classes\SteamID;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 class PlayerDamageEvent extends Event
 {
@@ -52,8 +53,13 @@ class PlayerDamageEvent extends Event
 
 	public function getAttackerUser()
 	{
-		$user = User::where('steam_id', $this->normalizeSteamId($this->attackerSteam))->first();
+        $steamId = $this->normalizeSteamId($this->attackerSteam);
+		$user = User::where('steam_id', $steamId)->first();
 
+        if (!$user) {
+            Log::info("Could not find user for ID: $steamId");
+        }
+        
 		return $user;
 	}
 
