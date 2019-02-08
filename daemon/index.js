@@ -124,6 +124,7 @@ Server.prototype = {
             that.log(`Authenticated RCON!`);
 
             that.bindReceiver();
+            that.setHighDetails();
             that.authed = true;
 
             for (let i = that.onConnectionAuth.length - 1; i >= 0; i--) {
@@ -160,6 +161,7 @@ Server.prototype = {
 
             that.destroyIntervals();
             that.startRconConnection();
+            that.setHighDetails();
 
             for (let i = that.onConnectionEnd.length - 1; i >= 0; i--) {
                 let cb = that.onConnectionEnd[i];
@@ -171,6 +173,7 @@ Server.prototype = {
 
             that.destroyIntervals();
             that.startRconConnection();
+            that.setHighDetails();
             
             for (let i = that.onConnectionError.length - 1; i >= 0; i--) {
                 let cb = that.onConnectionError[i];

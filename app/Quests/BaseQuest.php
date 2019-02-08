@@ -12,6 +12,8 @@ namespace App\Classes;
 use App\Quest;
 use App\QuestProgress;
 
+
+
 abstract class BaseQuest
 {
 	/** @var Quest */
@@ -71,4 +73,10 @@ abstract class BaseQuest
 		}
 
 	}
+    
+
+
+
+    
+    
 }

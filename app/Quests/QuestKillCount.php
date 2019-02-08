@@ -40,6 +40,7 @@ class QuestKillCount extends BaseQuest
 		$filter = $this->quest->questFilters()->where('key', 'weapon')->first();
 
 		if ($filter && $filter->value != $this->event->weapon) {
+            Log::info('Event does not match filter');
 			return false;
 		}
 
