@@ -17,7 +17,7 @@ class SolveQueuedEvents implements ShouldQueue
 {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	private $eventsPerJob = 30000;
+	private $eventsPerJob = 1000;
 	private $messageKey = null;
 
 	private $command;
