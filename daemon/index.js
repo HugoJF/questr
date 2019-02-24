@@ -25,6 +25,7 @@ app.use(cors());
 const HTTP_PORT = 10000;
 const REDIS_KEY = 'messages';
 const REDIS_STAGING_KEY = 'messages_staging';
+const RUNNING_STAGING = false;
 // TODO: https://api.ipify.org?format=json
 const LISTENING_IP = '104.156.246.245';
 const DATE_NOW = Date.now();
@@ -136,13 +137,16 @@ Server.prototype = {
         }).on('response', function (str) {
             // that.log(`Responded from RCON: ${str}`);
 
-            redisC.rpush([REDIS_STAGING_KEY, that.ip + ':' + that.port + ' - ' + str], function (err, reply) {
-                if (err) {
-                    that.log(err);
-                } else {
-                    that.log(reply);
-                }
-            });
+            if (RUNNING_STAGING) {
+                redisC.rpush([REDIS_STAGING_KEY, that.ip + ':' + that.port + ' - ' + str], function (err, reply) {
+                    if (err) {
+                        that.log(err);
+                    } else {
+                        that.log(reply);
+                    }
+                });
+            }
+
             redisC.rpush([REDIS_KEY, that.ip + ':' + that.port + ' - ' + str], function (err, reply) {
                 if (err) {
                     that.log(err);
@@ -174,7 +178,7 @@ Server.prototype = {
             that.destroyIntervals();
             that.startRconConnection();
             that.setHighDetails();
-            
+
             for (let i = that.onConnectionError.length - 1; i >= 0; i--) {
                 let cb = that.onConnectionError[i];
                 if (cb(err))
@@ -193,13 +197,15 @@ Server.prototype = {
             if (data.isValid) {
                 // that.log(`Received LOG ${dataCount++}: ${data.message}`);
 
-                redisC.rpush([REDIS_STAGING_KEY, that.ip + ':' + that.port + ' - ' + data.message], function (err, reply) {
-                    if (err) {
-                        that.log(err);
-                    } else {
-                        that.log(reply);
-                    }
-                });
+                if(RUNNING_STAGING) {
+                    redisC.rpush([REDIS_STAGING_KEY, that.ip + ':' + that.port + ' - ' + data.message], function (err, reply) {
+                        if (err) {
+                            that.log(err);
+                        } else {
+                            that.log(reply);
+                        }
+                    });
+                }
                 redisC.rpush([REDIS_KEY, that.ip + ':' + that.port + ' - ' + data.message], function (err, reply) {
                     if (err) {
                         that.log(err);
