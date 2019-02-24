@@ -17,7 +17,7 @@ class SolveQueuedEvents implements ShouldQueue
 {
 	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	private $eventsPerJob = 1000;
+	private $processingTime = 30000;
 	private $messageKey = null;
 
 	private $command;
@@ -44,13 +44,16 @@ class SolveQueuedEvents implements ShouldQueue
 		$start = round(microtime(true) * 1000);
 
 		$listSize = Redis::command('llen', [$this->messageKey]);
-
-		$listSize = $listSize > $this->eventsPerJob ? $this->eventsPerJob : $listSize;
+		$startTime = round(microtime(true) * 1000);
+		$duration = 0;
 
 		$eventParser = new EventParser();
 		$eventSolver = new EventSolver();
 
-		for ($i = 0; $i < $listSize; $i++) {
+		while ($listSize > 0 && $duration < $this->processingTime) {
+			$listSize = Redis::command('llen', [$this->messageKey]);
+			$duration = round(microtime(true) * 1000) - $startTime;
+
 			$raw = Redis::command('lpop', [$this->messageKey]);
 			$this->info("Parsing: ${raw}");
 			$event = $eventParser->parse($raw);
