@@ -185,7 +185,7 @@ class QuestController extends Controller
 		flash()->success("Quest $quest->title successfully created!");
 
 		if(!$quest->hidden) {
-			$url = redirect()->route('quests.show', $quest);
+			$url = route('quests.show', $quest);
 
 			CsgoApi::all()->execute([
 				["sm_csay Nova quest disponível no Questr: {$quest->title}", 0],

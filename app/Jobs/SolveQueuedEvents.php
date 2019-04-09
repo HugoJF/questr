@@ -69,8 +69,6 @@ class SolveQueuedEvents implements ShouldQueue
 		$end = round(microtime(true) * 1000);
 		$duration = $end - $start;
 
-		CsgoApi::all()->execute("sm_say Handling of $processingCount events took: $duration ms", 1000)->send();
-
 		Log::info("Processing of $processingCount events took: $duration ms");
 	}
 
