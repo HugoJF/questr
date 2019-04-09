@@ -8,6 +8,7 @@ use App\Quest;
 use App\QuestProgress;
 use App\Transaction;
 use Carbon\Carbon;
+use hugojf\CsgoServerApi\Facades\CsgoApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -182,6 +183,15 @@ class QuestController extends Controller
 		$quest->save();
 
 		flash()->success("Quest $quest->title successfully created!");
+
+		if(!$quest->hidden) {
+			$url = redirect()->route('quests.show', $quest);
+
+			CsgoApi::broadcast()->commands([
+				["sm_csay Nova quest disponível no Questr: {$quest->title}", 0],
+				["sm_say Para iniciar a quest também, acesse: $url", 1500]
+			])->send();
+		}
 
 		if ($quest->hidden) {
 			return redirect()->route('quests.show', $quest->code);
