@@ -83,6 +83,13 @@ class QuestController extends Controller
 
 		$questProgress->save();
 
+		$url = route('quests.show', $quest);
+
+		CsgoApi::all()->execute([
+			["sm_csay Alguém acabou de iniciar a quest: {$quest->title}", 0],
+			["sm_say Para iniciar a quest também, acesse: $url", 1500]
+		])->send();
+
 		// Notify user of result
 		flash()->success("Quest <strong>{$quest->title}</strong> has started!");
 
@@ -135,6 +142,13 @@ class QuestController extends Controller
 		$transaction->owner()->associate($questProgress);
 
 		$transaction->save();
+
+		$url = route('quests.show', $quest);
+
+		CsgoApi::all()->execute([
+			["sm_csay Alguém acabou de finalizar a quest: {$quest->title}", 0],
+			["sm_say Para iniciar a quest também, acesse: $url", 1500]
+		])->send();
 
 		flash()->success("<strong>Congratulations!</strong> You just finished quest <strong>$quest->title</strong> and got awarded with $quest->reward <i class=\"fas fa-coins\"></i>.")->important();
 
