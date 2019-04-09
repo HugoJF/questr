@@ -187,7 +187,7 @@ class QuestController extends Controller
 		if(!$quest->hidden) {
 			$url = redirect()->route('quests.show', $quest);
 
-			CsgoApi::all()->commands([
+			CsgoApi::all()->execute([
 				["sm_csay Nova quest disponível no Questr: {$quest->title}", 0],
 				["sm_say Para iniciar a quest também, acesse: $url", 1500]
 			])->send();
