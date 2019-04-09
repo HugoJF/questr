@@ -47,6 +47,7 @@ class SolveQueuedEvents implements ShouldQueue
 		$listSize = Redis::command('llen', [$this->messageKey]);
 		$startTime = round(microtime(true) * 1000);
 		$duration = 0;
+		$processingCount = 0;
 
 		$eventParser = new EventParser();
 		$eventSolver = new EventSolver();
@@ -58,6 +59,7 @@ class SolveQueuedEvents implements ShouldQueue
 			$raw = Redis::command('lpop', [$this->messageKey]);
 			$this->info("Parsing: ${raw}");
 			$event = $eventParser->parse($raw);
+			$processingCount++;
 			if ($event) {
 				$this->info("Event parsed, solving it now!");
 				$eventSolver->solve($event);
@@ -67,9 +69,9 @@ class SolveQueuedEvents implements ShouldQueue
 		$end = round(microtime(true) * 1000);
 		$duration = $end - $start;
 
-		CsgoApi::all()->execute("sm_say Handling of $listSize events took: $duration ms", 1000)->send();
+		CsgoApi::all()->execute("sm_say Handling of $processingCount events took: $duration ms", 1000)->send();
 
-		Log::info("Processing of $listSize events took: $duration ms");
+		Log::info("Processing of $processingCount events took: $duration ms");
 	}
 
 	private function info($message)
