@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Classes\EventParser;
 use App\Classes\EventSolver;
+use hugojf\CsgoServerApi\Facades\CsgoApi;
 use Illuminate\Bus\Queueable;
 use Illuminate\Console\Command;
 use Illuminate\Queue\SerializesModels;
@@ -66,6 +67,8 @@ class SolveQueuedEvents implements ShouldQueue
 		$end = round(microtime(true) * 1000);
 		$duration = $end - $start;
 
+		CsgoApi::all()->execute("sm_say Handling of $listSize events took: $duration ms", 1000)->send();
+		
 		Log::info("Handling of $listSize events took: $duration ms");
 	}
 
