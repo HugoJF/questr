@@ -86,8 +86,8 @@ class QuestController extends Controller
 		$url = route('quests.show', $quest);
 
 		CsgoApi::all()->execute([
-			["sm_csay Alguém acabou de iniciar a quest: {$quest->title}", 0],
-			["sm_say Para iniciar a quest também, acesse: $url", 1500]
+			["sm_csay \"Alguém acabou de iniciar a quest: {$quest->title}\"", 0],
+			["sm_say \"Para iniciar a quest também, acesse: $url\"", 1500]
 		])->send();
 
 		// Notify user of result
@@ -146,8 +146,8 @@ class QuestController extends Controller
 		$url = route('quests.show', $quest);
 
 		CsgoApi::all()->execute([
-			["sm_csay Alguém acabou de finalizar a quest: {$quest->title}", 0],
-			["sm_say Para iniciar a quest também, acesse: $url", 1500]
+			["sm_csay \"Alguém acabou de finalizar a quest: {$quest->title}\"", 0],
+			["sm_say \"Para iniciar a quest também, acesse: $url\"", 1500]
 		])->send();
 
 		flash()->success("<strong>Congratulations!</strong> You just finished quest <strong>$quest->title</strong> and got awarded with $quest->reward <i class=\"fas fa-coins\"></i>.")->important();
@@ -202,8 +202,8 @@ class QuestController extends Controller
 			$url = route('quests.show', $quest);
 
 			CsgoApi::all()->execute([
-				["sm_csay Nova quest disponível no Questr: {$quest->title}", 0],
-				["sm_say Para iniciar a quest também, acesse: $url", 1500]
+				["sm_csay \"Nova quest disponível no Questr: {$quest->title}\"", 0],
+				["sm_say \"Para iniciar a quest também, acesse: $url\"", 1500]
 			])->send();
 		}
 
