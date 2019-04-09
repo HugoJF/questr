@@ -68,8 +68,8 @@ class SolveQueuedEvents implements ShouldQueue
 		$duration = $end - $start;
 
 		CsgoApi::all()->execute("sm_say Handling of $listSize events took: $duration ms", 1000)->send();
-		
-		Log::info("Handling of $listSize events took: $duration ms");
+
+		Log::info("Processing of $listSize events took: $duration ms");
 	}
 
 	private function info($message)
