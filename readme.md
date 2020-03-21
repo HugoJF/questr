@@ -1,65 +1,64 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# Questr
+
+Quest system for CS:GO servers without dependencies with a in-game skin shop based on `kgns/weapons` plugin.
+
+## How it works
+
+This system is based on the internal UDP log system present in the Source engine.
+
+A daemon is used to ensure configured servers have the needed *convars* for this system to work. The daemon is also used to collect each UDP packet coming from the servers, process them and store in a Redis queue.
+
+Once the log packets are processed and stored, a job, scheduled to run each minute, is dispatched to compute and update individual quest progresses.
+
+Quests types are implemented with special classes that define how and which events (coming from the CS:GO servers) are processed into quest progresses. Quest modifiers can also be implemented in order to increase quest variety and difficulty.
+
+Quests are count based (kill count, damage count, etc) and have a reward once completed. They can also have a deadline and entry cost.
+
+Quests are created by the administrator manually, and once available, must be individually started by users (even quests without entry costs).
+
+## Project status
+
+This project is mostly abandoned since it needed some serious rework on the main quest processing job to avoid unecessary database load. Since then, [CSGO:Pipeline](https://github.com/HugoJF/csgo-pipeline) was fully implemented as a centralized CS:GO event processing system.
+
+Since this project did not get much usage from my servers, it never received an update to work with CS:GO Pipeline, which would solve part of the performance problems.
+
+## Screenshots
+
+#### Homepage
 
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+    <img src="https://i.imgur.com/aswJ9Q4.png"/>
 </p>
 
-## About Laravel
+#### Lista de Quests 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+<p align="center">
+    <img src="https://i.imgur.com/0zC9o5v.png"/>
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Rank 
+<p align="center">
+    <img src="https://i.imgur.com/jv2S8Wx.png"/>
+</p>
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+#### Shop 
+<p align="center">
+    <img src="https://i.imgur.com/fZRItWv.png"/>
+</p>
 
-## Learning Laravel
+#### Shop Filter 
+<p align="center">
+    <img src="https://i.imgur.com/h9OvHHw.png"/>
+</p>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+#### Inventory 
+<p align="center">
+    <img src="https://i.imgur.com/bYvGlMa.png"/>
+</p>
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Requirements
+  - PHP 7.x
+  - NodeJS
+  - MySQL/MariaDB
+  - Redis
+  - CS:GO server
