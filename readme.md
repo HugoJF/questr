@@ -58,7 +58,7 @@ Since this project did not get much usage from my servers, it never received an 
 
 #### Inventory 
 <p align="center">
-    <img src="https://i.imgur.com/bYvGlMa.png"/>
+    <img src="https://i.imgur.com/iUsBoaV.png"/>
 </p>
 
 ## Requirements
