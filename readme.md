@@ -27,28 +27,33 @@ Since this project did not get much usage from my servers, it never received an 
 #### Homepage
 
 <p align="center">
-    <img src="https://i.imgur.com/aswJ9Q4.png"/>
+    <img src="https://i.imgur.com/ypDA0wC.png"/>
 </p>
 
-#### Lista de Quests 
+#### Quest list 
 
 <p align="center">
-    <img src="https://i.imgur.com/0zC9o5v.png"/>
+    <img src="https://i.imgur.com/WfIuolD.png"/>
 </p>
 
 #### Rank 
 <p align="center">
-    <img src="https://i.imgur.com/jv2S8Wx.png"/>
+    <img src="https://i.imgur.com/Y4rV2fv.png"/>
 </p>
 
 #### Shop 
 <p align="center">
-    <img src="https://i.imgur.com/fZRItWv.png"/>
+    <img src="https://i.imgur.com/gTkPphM.png"/>
 </p>
 
 #### Shop Filter 
 <p align="center">
-    <img src="https://i.imgur.com/h9OvHHw.png"/>
+    <img src="https://i.imgur.com/kkjkRdz.png"/>
+</p>
+
+#### Shop buy screen
+<p align="center">
+    <img src="https://i.imgur.com/fSlIOXY.png"/>
 </p>
 
 #### Inventory 
